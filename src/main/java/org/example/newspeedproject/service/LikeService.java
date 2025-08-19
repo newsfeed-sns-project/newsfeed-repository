@@ -29,4 +29,18 @@ public class LikeService {
                 "좋아요가 완료되었습니다."
         );
     }
+
+    @Transactional
+    public LikeResponse deleteLike(Long likeId) {
+        Like like = likeRepository.findById(likeId).orElseThrow(
+                () -> new IllegalArgumentException("좋아요가 없습니다."));
+
+        likeRepository.delete(like);
+
+        return new LikeResponse(
+                like.getId(),
+                like.getPost().getId(),
+                like.getUser().getId(),
+                "좋아요가 취소되었습니다.");
+    }
 }
