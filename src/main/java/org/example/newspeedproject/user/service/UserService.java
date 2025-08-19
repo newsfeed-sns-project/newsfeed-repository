@@ -1,5 +1,6 @@
 package org.example.newspeedproject.user.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.user.dto.UserRequestDto;
 import org.example.newspeedproject.user.dto.UserResponseDto;
@@ -16,13 +17,24 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
 
+    public void signup(UserRequestDto request) {
+        userRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+        );
+
+        User user = new User(request.getUsername(),request.getEmail(),request.getPassword());
+        userRepository.save(user);
+    }
+
     @Transactional
     public UserResponseDto login(UserRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        // chk password
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
 
         return new UserResponseDto(user.getId());
     }
@@ -40,7 +52,7 @@ public class UserService {
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserResponseDto findUserId(Long id){
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
@@ -60,7 +72,9 @@ public class UserService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
         );
 
-        // chk password
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
 
         user.updateUser(request.getUsername(),request.getEmail());
         return new UserResponseDto(
@@ -80,7 +94,9 @@ public class UserService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
         );
 
-        //chk password
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
 
         userRepository.delete(user);
     }
