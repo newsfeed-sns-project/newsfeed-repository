@@ -1,4 +1,32 @@
 package org.example.newspeedproject.service;
 
+import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.dto.LikeResponse;
+import org.example.newspeedproject.dto.LikeRequest;
+import org.example.newspeedproject.entity.Like;
+import org.example.newspeedproject.repository.LikeRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
 public class LikeService {
+
+    private final LikeRepository likeRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    @Transactional
+    public LikeResponse addLike(LikeRequest request) {
+        Like like = new Like(post, user);
+
+        Like savedLike = likeRepository.save(like);
+
+        return new LikeResponse(
+                savedLike.getId(),
+                post.getId(),
+                user.getId(),
+                "좋아요가 완료되었습니다."
+        );
+    }
 }
