@@ -36,6 +36,14 @@ public class CommentController {
         return ResponseEntity.ok(commentService.findByPost(postsId));
     }
 
+    @PutMapping("/posts/comments/{id}")
+    public ResponseEntity<CommentResponseDto> update(
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @PathVariable Long id,
+            @RequestBody CommentRequestDto dto
+    ) {
+        return  ResponseEntity.ok(commentService.update(id, dto));
+    }
 
 
 }

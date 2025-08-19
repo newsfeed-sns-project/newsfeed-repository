@@ -52,5 +52,13 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public CommentResponseDto update(Long id, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("comment not found"));
+        comment.update(commentRequestDto.getComment());
+        commentRepository.save(comment);
+        return new CommentResponseDto(comment.getComment());
+    }
+
 
 }
