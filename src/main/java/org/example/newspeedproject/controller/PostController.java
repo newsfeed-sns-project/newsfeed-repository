@@ -2,9 +2,11 @@ package org.example.newspeedproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.dto.CreatePostRequestDto;
+import org.example.newspeedproject.dto.PostPageResponse;
 import org.example.newspeedproject.dto.PostResponseDto;
 import org.example.newspeedproject.service.PostService;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,18 @@ public class PostController {
         return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
     }
 
+//    //게시물 검색
+//    @GetMapping("/posts")
+//    public ResponseEntity<List<PostResponseDto>> findAll() {
+//        List<PostResponseDto> postResponseDtos = postService.findAll();
+//        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
+//    }
+
     //게시물 검색
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponseDto>> findAll() {
-        List<PostResponseDto> postResponseDtos = postService.findAll();
-        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
+    public ResponseEntity<PostPageResponse> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        PostPageResponse response = postService.findAll(page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //게시물 id검색
@@ -40,15 +49,15 @@ public class PostController {
 
     //게시물 내용 변경
     @PatchMapping("/posts/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody CreatePostRequestDto requestDto) {
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody CreatePostRequestDto requestDto) {
         postService.updatePost(id, requestDto.getTitle(), requestDto.getContents());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("*** 게시글 수정 완료 ***", HttpStatus.OK);
     }
 
     //게시물 삭제
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<String> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("*** 게시글 삭제 성공 ***", HttpStatus.OK);
     }
 }
