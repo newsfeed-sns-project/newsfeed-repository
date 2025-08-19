@@ -71,7 +71,7 @@ public class UserController {
 
     //회원 탈퇴
     @DeleteMapping("/me")
-    public String deleteUser(@RequestBody @Valid UserRequestDto userRequest,HttpServletRequest request){
+    public String deleteUser(@RequestBody UserRequestDto userRequest,HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session == null || session.getAttribute("LOGIN_USER_ID") == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
