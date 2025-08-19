@@ -18,6 +18,14 @@ public class LikeService {
 
     @Transactional
     public LikeResponse addLike(LikeRequest request) {
+        Post post = postRepository.findById(request.getPostId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 없습니다.")
+        );
+
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 없습니다.")
+        );
+
         Like like = new Like(post, user);
 
         Like savedLike = likeRepository.save(like);

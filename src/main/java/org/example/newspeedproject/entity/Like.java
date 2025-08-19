@@ -3,6 +3,8 @@ package org.example.newspeedproject.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +25,16 @@ public class Like {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public Like (Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
+
+    @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime modifiedAt;
 }
