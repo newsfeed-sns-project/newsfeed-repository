@@ -34,4 +34,19 @@ public class User {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedDateAt;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void updateUser(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }

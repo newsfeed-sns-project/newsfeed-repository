@@ -2,6 +2,7 @@ package org.example.newspeedproject.user.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.newspeedproject.user.entity.User;
 
 import java.time.LocalDateTime;
 
@@ -20,5 +21,9 @@ public class UserResponseDto {
         this.email = email;
         this.createdDateAt = createdDateAt;
         this.modifiedDateAt = modifiedDateAt;
+    }
+
+    public UserResponseDto(Long id) {
+        this.id = id;
     }
 }
