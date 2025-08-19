@@ -24,10 +24,6 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    public Comment(String comment) {
-        this.comment = comment;
-    }
-
     public Comment(String comment, User user, Post post) {
         this.comment = comment;
         this.user = user;
