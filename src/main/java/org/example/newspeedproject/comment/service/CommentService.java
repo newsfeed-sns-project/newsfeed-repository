@@ -45,7 +45,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentResponseDto> findByPost(Long postId) {
-        List<Comment> comments = commentRepository.findByPost(postId);
+        List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream()
                 .map(comment -> new CommentResponseDto(
                         comment.getComment()))
@@ -54,11 +54,15 @@ public class CommentService {
 
     @Transactional
     public CommentResponseDto update(Long id, CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("comment not found"));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("comment not found"));
         comment.update(commentRequestDto.getComment());
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getComment());
     }
 
-
+    @Transactional
+    public void delete(Long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("comment not found"));
+        commentRepository.delete(comment);
+    }
 }

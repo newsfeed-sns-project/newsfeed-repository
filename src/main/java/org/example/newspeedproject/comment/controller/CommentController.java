@@ -42,7 +42,15 @@ public class CommentController {
             @PathVariable Long id,
             @RequestBody CommentRequestDto dto
     ) {
-        return  ResponseEntity.ok(commentService.update(id, dto));
+        return ResponseEntity.ok(commentService.update(id, dto));
+    }
+
+    @DeleteMapping("/posts/comments/{id}")
+    public void delete(
+            @PathVariable Long id,
+            @SessionAttribute(name = "LOGIN_USER") Long userId
+    ) {
+        commentService.delete(id);
     }
 
 
