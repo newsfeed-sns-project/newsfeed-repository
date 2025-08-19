@@ -3,7 +3,7 @@ package org.example.newspeedproject.follow.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-//히히
+
 @Entity
 @Getter
 @NoArgsConstructor
