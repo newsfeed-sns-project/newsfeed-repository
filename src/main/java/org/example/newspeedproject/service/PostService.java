@@ -1,7 +1,7 @@
 package org.example.newspeedproject.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.dto.PostPageResponse;
+import org.example.newspeedproject.dto.PostPageResponseDto;
 import org.example.newspeedproject.dto.PostResponseDto;
 import org.example.newspeedproject.entity.Post;
 import org.example.newspeedproject.repository.PostRepository;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,7 +46,7 @@ public class PostService {
 //    }
 
     //게시글 전체 검색 서비스(페이징, 내림차순)
-    public PostPageResponse findAll(int page, int size) {
+    public PostPageResponseDto findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<Post> posts =  postRepository.findAll(pageable);
 
@@ -57,15 +56,29 @@ public class PostService {
             dtos.add(dto);
         }
 
-        return new PostPageResponse(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
+        return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
 
     }
+
+//    //게시글 전체 검색 서비스(페이징, 내림차순)
+//    public PostPageResponseDto findAll(int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+//        Page<Post> posts =  postRepository.findAll(pageable);
+//
+//        return posts.map(post -> {
+//            String userName = post.getTitle() != null ?  post.getTitle() : null;
+//
+//            return new PostPageResponseDto(
+//                    post.getId(), post.getTitle(), post.getContents(), userName);
+//        });
+//    }
+
 
     //게시글 상세 검색 서비스
     public PostResponseDto findById(Long id) {
         Optional<Post> posted = postRepository.findById(id);
         if(posted.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "작성된 일정이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "작성된 게시글이 없습니다.");
         }
 
         Post findPost = posted.get();
@@ -75,14 +88,42 @@ public class PostService {
     //게시글 수정 서비스
     @Transactional
     public void updatePost(Long id, String title, String contents) {
-        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "없는 글 입니다."));
+        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
         posted.updatePost(title, contents);
     }
 
     //게시글 삭제 서비스
     @Transactional
     public void deletePost(Long id) {
-        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 글이 없습니다."));
+        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
         postRepository.delete(posted);
     }
+
+    // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
+//    //게시글 수정 서비스
+//    @Transactional
+//    public void updatePost(Long id, String title, String contents, Long currentUserId) {
+//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
+//
+//        //작성자가 아닌 경우 예외처리 발생
+//        if(!posted.getAuthorId().equals(currentUserId)) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+//        }
+//
+//        posted.updatePost(title, contents, currentUserId);
+//    }
+//
+//    //게시글 삭제 서비스
+//    @Transactional
+//    public void deletePost(Long id, Long currentUserId) {
+//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
+//
+//        //작성자가 아닌 경우 예외처리 발생
+//        if(!posted.getAuthorId().equals(currentUserId)) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
+//        }
+//
+//        postRepository.delete(posted);
+//    }
+
 }

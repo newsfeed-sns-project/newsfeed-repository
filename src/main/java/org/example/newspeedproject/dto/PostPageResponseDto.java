@@ -5,16 +5,16 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class PostPageResponse {
+public class PostPageResponseDto {
 
     private final List<PostResponseDto> posts;
-    private final int number;
+    private final int pageNumber;
     private final int totalPages;
     private final long totalElements;
 
-    public PostPageResponse(List<PostResponseDto> posts, int number, int totalPages, long totalElements) {
+    public PostPageResponseDto(List<PostResponseDto> posts, int pageNumber, int totalPages, long totalElements) {
         this.posts = posts;
-        this.number = number;
+        this.pageNumber = pageNumber;
         this.totalPages = totalPages;
         this.totalElements = totalElements;
     }
