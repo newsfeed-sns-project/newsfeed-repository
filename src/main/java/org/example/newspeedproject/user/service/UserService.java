@@ -18,9 +18,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void signup(UserRequestDto request) {
-        userRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
-        );
+        userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다.");
+        });
 
         User user = new User(request.getUsername(),request.getEmail(),request.getPassword());
         userRepository.save(user);
@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public UserResponseDto login(UserRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
         );
 
         if (!user.getPassword().equals(request.getPassword())) {
