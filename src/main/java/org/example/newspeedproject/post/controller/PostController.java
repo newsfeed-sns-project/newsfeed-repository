@@ -1,6 +1,7 @@
 package org.example.newspeedproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.consts.Const;
 import org.example.newspeedproject.dto.CreatePostRequestDto;
 import org.example.newspeedproject.dto.PostPageResponseDto;
 import org.example.newspeedproject.dto.PostResponseDto;
@@ -22,13 +23,6 @@ public class PostController {
         PostResponseDto postResponseDto = postService.save(requestDto.getTitle(), requestDto.getContents());
         return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
     }
-
-//    //게시물 검색
-//    @GetMapping("/posts")
-//    public ResponseEntity<List<PostResponseDto>> findAll() {
-//        List<PostResponseDto> postResponseDtos = postService.findAll();
-//        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
-//    }
 
     //게시물 검색
     @GetMapping("/posts")
@@ -58,18 +52,17 @@ public class PostController {
         return new ResponseEntity<>("*** 게시글 삭제 성공 ***", HttpStatus.OK);
     }
 
-    // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
-//    //게시물 내용 변경
-//    @PatchMapping("/posts/{id}")
-//    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto requestDto, @RequestParam Long currentUserId) {
-//        postService.updatePost(id, requestDto.getTitle(), requestDto.getContents(),  currentUserId);
+//    // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
+//    @PutMapping("/posts/{id}")
+//    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
+//        postService.updatePost(id, requestDto.getTitle(), requestDto.getContents(), userId);
 //        return new ResponseEntity<>("*** 게시글 수정 완료 ***", HttpStatus.OK);
 //    }
-//
+
 //    //게시물 삭제
 //    @DeleteMapping("/posts/{id}")
-//    public ResponseEntity<String> deletePost(@PathVariable Long id, @RequestParam Long currentUserId) {
-//        postService.deletePost(id, currentUserId);
+//    public ResponseEntity<String> deletePost(@PathVariable Long id, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
+//        postService.deletePost(id, userId);
 //        return new ResponseEntity<>("*** 게시글 삭제 성공 ***", HttpStatus.OK);
 //    }
 }

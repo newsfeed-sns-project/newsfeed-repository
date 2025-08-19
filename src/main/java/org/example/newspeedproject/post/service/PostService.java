@@ -33,17 +33,6 @@ public class PostService {
 
         return new PostResponseDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContents(), savedPost.getCreatedDate(), savedPost.getModifiedDate());
     }
-//    //게시글 전체 검색 서비스
-//    public List<PostResponseDto> findAll() {
-//        List<Post> posts = postRepository.findAll();
-//        List<PostResponseDto> dtos = new ArrayList<>();
-//
-//        for(Post post : posts) {
-//            PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate());
-//            dtos.add(postResponseDto);
-//        }
-//        return dtos;
-//    }
 
     //게시글 전체 검색 서비스(페이징, 내림차순)
     public PostPageResponseDto findAll(int page, int size) {
@@ -59,20 +48,6 @@ public class PostService {
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
 
     }
-
-//    //게시글 전체 검색 서비스(페이징, 내림차순)
-//    public PostPageResponseDto findAll(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-//        Page<Post> posts =  postRepository.findAll(pageable);
-//
-//        return posts.map(post -> {
-//            String userName = post.getTitle() != null ?  post.getTitle() : null;
-//
-//            return new PostPageResponseDto(
-//                    post.getId(), post.getTitle(), post.getContents(), userName);
-//        });
-//    }
-
 
     //게시글 상세 검색 서비스
     public PostResponseDto findById(Long id) {
@@ -100,27 +75,27 @@ public class PostService {
     }
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
-//    //게시글 수정 서비스
+    //게시글 수정 서비스
 //    @Transactional
-//    public void updatePost(Long id, String title, String contents, Long currentUserId) {
+//    public void updatePost(Long id, String title, String contents, Long userId) {
 //        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
 //
 //        //작성자가 아닌 경우 예외처리 발생
-//        if(!posted.getAuthorId().equals(currentUserId)) {
+//        if (!userId.equals(posted.getUser().getId()) {
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
 //        }
 //
-//        posted.updatePost(title, contents, currentUserId);
+//        posted.updatePost(title, contents);
 //    }
 //
 //    //게시글 삭제 서비스
 //    @Transactional
-//    public void deletePost(Long id, Long currentUserId) {
+//    public void deletePost(Long id, Long userId) {
 //        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
 //
 //        //작성자가 아닌 경우 예외처리 발생
-//        if(!posted.getAuthorId().equals(currentUserId)) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
+//        if (!userId.equals(posted.getUser().getId()) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
 //        }
 //
 //        postRepository.delete(posted);
