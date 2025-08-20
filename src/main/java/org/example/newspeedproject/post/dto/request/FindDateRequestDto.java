@@ -14,6 +14,5 @@ public class FindDateRequestDto {
     public FindDateRequestDto(LocalDate start, LocalDate end) {
         this.start = start;
         this.end = end;
-
     }
 }

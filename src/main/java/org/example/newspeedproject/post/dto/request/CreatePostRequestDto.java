@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class CreatePostRequestDto {
 
-    //@NotBlank
-    //@Size(min = 1, max = 50)
+    @NotBlank
+    @Size(min = 1, max = 50)
     private final String title;
 
-    //@NotBlank
-    //@Size(max=100)
+    @NotBlank
+    @Size(max=100)
     private final String contents;
 
     public CreatePostRequestDto(String title, String contents) {
