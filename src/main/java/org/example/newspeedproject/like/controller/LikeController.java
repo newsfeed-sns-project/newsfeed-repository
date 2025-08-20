@@ -3,6 +3,7 @@ package org.example.newspeedproject.like.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.service.LikeService;
+import org.example.newspeedproject.post.consts.Const;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class LikeController {
     @PostMapping("/{postId}/likes")
     public ResponseEntity<LikeResponse> addLike(
             @PathVariable Long postId,
-            @SessionAttribute(name = LOGIN_USER) Long userId) {
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
 
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
@@ -32,7 +33,7 @@ public class LikeController {
     @DeleteMapping("/likes/{likeId}")
     public ResponseEntity<LikeResponse> deleteLike(
             @PathVariable Long likeId,
-            @SessionAttribute(name = LOGIN_USER) Long userId) {
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
 
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
