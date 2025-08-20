@@ -1,5 +1,6 @@
 package org.example.newspeedproject.follow.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.follow.entity.Follow;
 import org.example.newspeedproject.follow.repository.FollowRepository;
 import org.example.newspeedproject.user.entity.User;
@@ -10,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@RequiredArgsConstructor
 public class FollowService {
-    private FollowRepository followRepository;
-    private UserRepository userRepository;
+    private final FollowRepository followRepository;
+    private final UserRepository userRepository;
 
     //이웃 추가
     @Transactional
