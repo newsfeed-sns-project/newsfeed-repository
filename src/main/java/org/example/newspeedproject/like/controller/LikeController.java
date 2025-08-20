@@ -1,9 +1,9 @@
-package org.example.newspeedproject.controller;
+package org.example.newspeedproject.like.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.dto.LikeRequest;
-import org.example.newspeedproject.dto.LikeResponse;
-import org.example.newspeedproject.service.LikeService;
+import org.example.newspeedproject.like.dto.LikeRequest;
+import org.example.newspeedproject.like.dto.LikeResponse;
+import org.example.newspeedproject.like.service.LikeService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

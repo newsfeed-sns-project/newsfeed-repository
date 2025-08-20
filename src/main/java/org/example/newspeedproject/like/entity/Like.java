@@ -1,4 +1,4 @@
-package org.example.newspeedproject.entity;
+package org.example.newspeedproject.like.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

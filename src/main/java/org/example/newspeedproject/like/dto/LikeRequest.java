@@ -1,4 +1,4 @@
-package org.example.newspeedproject.dto;
+package org.example.newspeedproject.like.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

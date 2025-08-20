@@ -1,10 +1,10 @@
-package org.example.newspeedproject.service;
+package org.example.newspeedproject.like.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.dto.LikeResponse;
-import org.example.newspeedproject.dto.LikeRequest;
-import org.example.newspeedproject.entity.Like;
-import org.example.newspeedproject.repository.LikeRepository;
+import org.example.newspeedproject.like.dto.LikeResponse;
+import org.example.newspeedproject.like.dto.LikeRequest;
+import org.example.newspeedproject.like.entity.Like;
+import org.example.newspeedproject.like.repository.LikeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
