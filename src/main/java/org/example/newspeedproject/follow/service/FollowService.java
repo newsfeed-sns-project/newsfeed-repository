@@ -1,6 +1,7 @@
 package org.example.newspeedproject.follow.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.follow.dto.FollowingResponse;
 import org.example.newspeedproject.follow.entity.Follow;
 import org.example.newspeedproject.follow.repository.FollowRepository;
 import org.example.newspeedproject.user.entity.User;
@@ -9,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +41,18 @@ public class FollowService {
 
         Follow follow = new Follow(myUser, userToFollow);
         followRepository.save(follow);
+    }
+    //팔로잉 조회
+    @Transactional
+    public List<FollowingResponse> getFollowings(Long myUserId) {
+        User myUser = userRepository.findById(myUserId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+        );
+        List<Follow> follows = followRepository.findAllByFollower(myUser);
+        List<FollowingResponse> followingResponses = new ArrayList<>();
+        for (Follow follow : follows) {
+            followingResponses.add(new FollowingResponse(follow.getFollowing()));
+        }
+        return followingResponses;
     }
 }

@@ -29,21 +29,21 @@ public class FollowController {
         followService.addFollow(myUserId, userTargetId);
         return ResponseEntity.noContent().build();
     }
-    // t 팔로잉 조회(userTargetId = 123번 유저가 팔로우 하고 있는 사람들 목록)
-   /* @GetMapping("/{userTargetId}/followings")
-    public ResponseEntity<List<FollowingResponse>>  getFollowings(@PathVariable Long userTargetId,HttpServletRequest request){
-        //T 팔로잉 조회를 할때 로그인을 한 세션이 필요할까?
-        /*T 나(로그인한)를 팔로워하는 사람을 찾는게 맞는걸까?
-          T 데이터 베이스에 포함된 유저들을 모두 조회할수 있는 기능을 만들어야하는걸까
-    */
-
-
-
+// t 팔로잉 조회(로그인한 유저의 팔로잉 목록을 조회하는 기능)
+    @GetMapping("/me/follows")
+    public ResponseEntity<List<FollowingResponse>> getFollowing(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요이 필요합니다.");
+        }
+        Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
+        List<FollowingResponse> followings = followService.getFollowings(myUserId);
+        return ResponseEntity.ok().body(followings);
+    }
     // t 팔로워 조회(userTargetId = 123번 유저를 팔로우 하고 있는 사람들 목록)
 
 
 
+
     //팔로우 삭제
-
-
 }
