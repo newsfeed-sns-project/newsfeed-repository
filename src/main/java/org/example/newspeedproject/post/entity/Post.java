@@ -1,6 +1,5 @@
-package org.example.newspeedproject.post.entity;
+package org.example.newspeedproject.entity;
 
-import org.example.newspeedproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,18 +22,23 @@ public class Post extends BaseEntity {
 
     //연관관계 설정 시 작성자 id값을 받아오면 그 값으로 교체 예정
     //생성자, service, controller 에서도 값 변경 필요
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
-    public Post(String title, String contents, User user) {
+    public Post(String title, String contents) {
         this.title = title;
         this.contents = contents;
-        this.user = user;
     }
 
     public void updatePost(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
+
+//    public void updatePost(String title, String contents, User user) {
+//        this.title = title;
+//        this.contents = contents;
+//        this.user = user;
+//    }
 }

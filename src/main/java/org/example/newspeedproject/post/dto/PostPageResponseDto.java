@@ -1,4 +1,4 @@
-package org.example.newspeedproject.post.dto;
+package org.example.newspeedproject.dto;
 
 import lombok.Getter;
 

@@ -51,12 +51,4 @@ public class User {
     public void updatePassword(String password) {
         this.password = password;
     }
-
-    private User(Long id) {
-        this.id = id;
-    }
-
-    public static User fromUserId(Long id) {
-        return new User(id);
-    }
 }

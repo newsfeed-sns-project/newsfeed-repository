@@ -1,7 +1,6 @@
-package org.example.newspeedproject.post.dto;
+package org.example.newspeedproject.dto;
 
 import lombok.Getter;
-import org.example.newspeedproject.user.entity.User;
 
 import java.time.LocalDateTime;
 
@@ -13,15 +12,13 @@ public class PostResponseDto {
     private final String contents;
     private final LocalDateTime createdDate;
     private final LocalDateTime modifiedDate;
-    private final Long userId;
 
-    public PostResponseDto(Long id, String title, String contents, LocalDateTime createdDate, LocalDateTime modifiedDate, Long userId) {
+    public PostResponseDto(Long id, String title, String contents, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
-        this.userId = userId;
     }
 
 }
