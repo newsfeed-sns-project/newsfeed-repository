@@ -2,6 +2,7 @@ package org.example.newspeedproject.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.user.dto.LoginRequestDto;
+import org.example.newspeedproject.user.dto.PasswordChangeRequestDto;
 import org.example.newspeedproject.user.dto.UserRequestDto;
 import org.example.newspeedproject.user.dto.UserResponseDto;
 import org.example.newspeedproject.user.entity.User;
@@ -38,19 +39,6 @@ public class UserService {
         return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail());
     }
 
-    @Transactional
-    public UserResponseDto save(UserRequestDto request) {
-        User user = new User(request.getUsername(),request.getEmail(),request.getPassword());
-        User savedUser = userRepository.save(user);
-        return new UserResponseDto(
-                savedUser.getId(),
-                savedUser.getUsername(),
-                savedUser.getEmail(),
-                savedUser.getCreatedDateAt(),
-                savedUser.getModifiedDateAt()
-        );
-    }
-
     @Transactional(readOnly = true)
     public UserResponseDto findUserId(Long id){
         User user = userRepository.findById(id).orElseThrow(
@@ -78,7 +66,22 @@ public class UserService {
         user.updateUser(request.getUsername(),request.getEmail());
     }
 
-    // add update user password
+    @Transactional
+    public void passwordChange(Long id, PasswordChangeRequestDto request) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
+        );
+
+        if (!user.getPassword().equals(request.getOldpassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
+
+        if (user.getPassword().equals(request.getNewpassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경될 비밀번호가 이전 비밀번호와 동일합니다.");
+        }
+
+        user.updatePassword(request.getNewpassword());
+    }
 
     @Transactional
     public void deleteUser(Long id, LoginRequestDto request) {

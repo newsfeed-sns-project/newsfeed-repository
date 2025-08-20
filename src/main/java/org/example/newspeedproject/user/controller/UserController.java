@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.user.dto.LoginRequestDto;
+import org.example.newspeedproject.user.dto.PasswordChangeRequestDto;
 import org.example.newspeedproject.user.dto.UserRequestDto;
 import org.example.newspeedproject.user.dto.UserResponseDto;
 import org.example.newspeedproject.user.service.UserService;
@@ -45,7 +46,18 @@ public class UserController {
         return "로그아웃 성공";
     }
 
-    //비밀번호 수정 @PatchMapping("/me/password")
+    //비밀번호 수정
+    @PatchMapping("/me/password")
+    public String passwordchange(@RequestBody @Valid PasswordChangeRequestDto userRequest, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session == null || session.getAttribute("LOGIN_USER_ID") == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
+        }
+
+        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+        userService.passwordChange(id,userRequest);
+        return "수정 완료";
+    }
 
     //프로필 수정
     @PatchMapping("/me/profile")
