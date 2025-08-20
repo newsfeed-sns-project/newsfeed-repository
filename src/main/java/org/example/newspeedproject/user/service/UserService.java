@@ -1,7 +1,7 @@
 package org.example.newspeedproject.user.service;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.user.dto.LoginRequestDto;
 import org.example.newspeedproject.user.dto.UserRequestDto;
 import org.example.newspeedproject.user.dto.UserResponseDto;
 import org.example.newspeedproject.user.entity.User;
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto login(UserRequestDto request) {
+    public UserResponseDto login(LoginRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
         );
@@ -35,8 +35,7 @@ public class UserService {
         if (!user.getPassword().equals(request.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
         }
-
-        return new UserResponseDto(user.getId());
+        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail());
     }
 
     @Transactional
@@ -67,7 +66,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto updateUserProfile(Long id, UserRequestDto request) {
+    public void updateUserProfile(Long id, UserRequestDto request) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
         );
@@ -77,19 +76,12 @@ public class UserService {
         }
 
         user.updateUser(request.getUsername(),request.getEmail());
-        return new UserResponseDto(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getCreatedDateAt(),
-                user.getModifiedDateAt()
-        );
     }
 
     // add update user password
 
     @Transactional
-    public void deleteUser(Long id, UserRequestDto request) {
+    public void deleteUser(Long id, LoginRequestDto request) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!")
         );

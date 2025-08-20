@@ -22,7 +22,9 @@ public class UserResponseDto {
         this.modifiedDateAt = modifiedDateAt;
     }
 
-    public UserResponseDto(Long id) {
+    public UserResponseDto(Long id, String username, String email) {
         this.id = id;
+        this.username = username;
+        this.email = email;
     }
 }

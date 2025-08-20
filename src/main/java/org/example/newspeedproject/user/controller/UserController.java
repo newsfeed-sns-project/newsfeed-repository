@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.user.dto.LoginRequestDto;
 import org.example.newspeedproject.user.dto.UserRequestDto;
 import org.example.newspeedproject.user.dto.UserResponseDto;
 import org.example.newspeedproject.user.service.UserService;
@@ -26,7 +27,7 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
-    public String login(@RequestBody @Valid UserRequestDto userRequest, HttpServletRequest request){
+    public String login(@RequestBody @Valid LoginRequestDto userRequest, HttpServletRequest request){
         UserResponseDto id = userService.login(userRequest);
 
         HttpSession session = request.getSession();
@@ -71,7 +72,7 @@ public class UserController {
 
     //회원 탈퇴
     @DeleteMapping("/me")
-    public String deleteUser(@RequestBody UserRequestDto userRequest,HttpServletRequest request){
+    public String deleteUser(@RequestBody @Valid LoginRequestDto userRequest,HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session == null || session.getAttribute("LOGIN_USER_ID") == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");

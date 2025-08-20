@@ -19,10 +19,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //pk, autoincrement
 
-    @Column(length = 4)
+    @Column(length = 20)
     private String username;
 
-    @Column(length = 20)
+    @Column(length = 30)
     private String email;
 
     @Column(length = 100)
