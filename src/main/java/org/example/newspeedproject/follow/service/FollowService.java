@@ -83,7 +83,7 @@ public class FollowService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "언팔로우할 유저를 찾을 수 없습니다.")
         );
 
-        Follow follow = followRepository.findByFollowingAndFollowing(myUser, userToUnfollow).orElseThrow(
+        Follow follow = followRepository.findByFollowerAndFollowing(myUser, userToUnfollow).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 팔로우 관계를 찾을 수 없습니다.")
         );
         followRepository.delete(follow);
