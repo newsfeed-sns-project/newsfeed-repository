@@ -22,4 +22,5 @@ public abstract class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;
 
+
 }

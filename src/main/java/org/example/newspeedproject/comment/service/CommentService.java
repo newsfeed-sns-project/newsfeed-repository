@@ -13,9 +13,8 @@ import org.example.newspeedproject.user.entity.User;
 import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ public class CommentService {
                 () -> new IllegalArgumentException("user not found")); //팀원 지원 필요
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("post not found"));
-
         Comment comment = new Comment(commentRequestDto.getComment(), user, post);
         commentRepository.save(comment);
 
@@ -42,7 +40,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public CommentResponseDto findone(Long id) {
+    public CommentResponseDto findOne(Long id) {
         Comment comment = commentRepository
                 .findById(id)
                 .orElseThrow(
