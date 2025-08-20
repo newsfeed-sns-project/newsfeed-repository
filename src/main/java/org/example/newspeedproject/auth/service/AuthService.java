@@ -1,4 +1,38 @@
 package org.example.newspeedproject.auth.service;
 
+import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.auth.dto.AuthRequestDto;
+import org.example.newspeedproject.auth.dto.AuthResponseDto;
+import org.example.newspeedproject.auth.dto.LoginRequestDto;
+import org.example.newspeedproject.user.entity.User;
+import org.example.newspeedproject.user.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+@Service
+@RequiredArgsConstructor
 public class AuthService {
+    private final UserRepository userRepository;
+
+    public AuthResponseDto signup(AuthRequestDto request) {
+        userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다.");
+        });
+
+        User user = new User(request.getUsername(), request.getEmail(), request.getPassword());
+        User savedUser = userRepository.save(user);
+        return new AuthResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getCreatedDateAt(), savedUser.getModifiedDateAt());
+    }
+
+    @Transactional
+    public AuthResponseDto login(LoginRequestDto request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
+        return new AuthResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedDateAt(), user.getModifiedDateAt());
+    }
 }
