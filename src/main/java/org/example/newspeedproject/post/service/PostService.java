@@ -62,20 +62,6 @@ public class PostService {
         return new PostResponseDto(findPost.getId(), findPost.getTitle(), findPost.getContents(), findPost.getCreatedDate(), findPost.getModifiedDate(), findPost.getUser().getId());
     }
 
-//    //게시글 수정 서비스
-//    @Transactional
-//    public void updatePost(Long id, String title, String contents) {
-//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
-//        posted.updatePost(title, contents);
-//    }
-//
-//    //게시글 삭제 서비스
-//    @Transactional
-//    public void deletePost(Long id) {
-//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
-//        postRepository.delete(posted);
-//    }
-
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
     //게시글 수정 서비스
     @Transactional

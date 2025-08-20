@@ -19,7 +19,7 @@ public class PostController {
 
     //게시물 작성
     @PostMapping("/posts")
-    public ResponseEntity<PostResponseDto> save(@RequestBody CreatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
+    public ResponseEntity<PostResponseDto> create(@RequestBody CreatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
         PostResponseDto postResponseDto = postService.save(requestDto.getTitle(), requestDto.getContents(), userId);
         return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
     }
@@ -37,20 +37,6 @@ public class PostController {
         PostResponseDto postResponseDto = postService.findById(id);
         return new ResponseEntity<>(postResponseDto, HttpStatus.OK);
     }
-
-//    //게시물 내용 변경
-//    @PatchMapping("/posts/{id}")
-//    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto requestDto) {
-//        postService.updatePost(id, requestDto.getTitle(), requestDto.getContents());
-//        return new ResponseEntity<>("*** 게시글 수정 완료 ***", HttpStatus.OK);
-//    }
-//
-//    //게시물 삭제
-//    @DeleteMapping("/posts/{id}")
-//    public ResponseEntity<String> deletePost(@PathVariable Long id) {
-//        postService.deletePost(id);
-//        return new ResponseEntity<>("*** 게시글 삭제 성공 ***", HttpStatus.OK);
-//    }
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
     @PutMapping("/posts/{id}")
