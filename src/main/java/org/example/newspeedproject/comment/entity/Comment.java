@@ -3,8 +3,9 @@ package org.example.newspeedproject.comment.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.post.Post;
-import org.example.newspeedproject.user.User;
+import org.example.newspeedproject.post.entity.Post;
+import org.example.newspeedproject.user.entity.User;
+
 
 @Getter
 @Entity

@@ -6,8 +6,9 @@ import org.example.newspeedproject.comment.dto.CommentRequestDto;
 import org.example.newspeedproject.comment.dto.CommentResponseDto;
 import org.example.newspeedproject.comment.entity.Comment;
 import org.example.newspeedproject.comment.repository.CommentRepository;
-import org.example.newspeedproject.post.Post;
-import org.example.newspeedproject.user.User;
+
+import org.example.newspeedproject.post.entity.Post;
+import org.example.newspeedproject.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.SessionAttribute;
