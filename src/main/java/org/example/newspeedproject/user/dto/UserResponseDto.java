@@ -21,8 +21,4 @@ public class UserResponseDto {
         this.createdDateAt = createdDateAt;
         this.modifiedDateAt = modifiedDateAt;
     }
-
-    public UserResponseDto(Long id) {
-        this.id = id;
-    }
 }
