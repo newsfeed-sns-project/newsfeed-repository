@@ -9,8 +9,10 @@ import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.post.repository.PostRepository;
 import org.example.newspeedproject.user.entity.User;
 import org.example.newspeedproject.user.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +25,15 @@ public class LikeService {
     @Transactional
     public LikeResponse addLike(LikeRequest request) {
         Post post = postRepository.findById(request.getPostId()).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 없습니다.")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.")
         );
 
         User user = userRepository.findById(request.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 없습니다.")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
         );
 
         if (likeRepository.findByPostAndUser(post, user).isPresent()) {
-            throw new IllegalArgumentException("이미 좋아요를 눌렀습니다.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 좋아요를 눌렀습니다.");
         }
 
         Like like = new Like(post, user);
@@ -49,7 +51,7 @@ public class LikeService {
     @Transactional
     public LikeResponse deleteLike(Long likeId) {
         Like like = likeRepository.findById(likeId).orElseThrow(
-                () -> new IllegalArgumentException("좋아요가 없습니다."));
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "좋아요가 없습니다."));
 
         likeRepository.delete(like);
 
