@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LoginRequestDto {
+public class ProfileChangeRequestDto {
+    @NotBlank
+    @Size(min = 1, max = 20, message = "이름은 최소 1자 최대 20자로 설정해야됩니다.")
+    private String username;
+
     @NotBlank
     @Email(message = "이메일 형식이 아닙니다.")
     @Size(min = 1, max = 30, message = "이메일은 최소 1자 최대 30자로 설정해야됩니다.")
