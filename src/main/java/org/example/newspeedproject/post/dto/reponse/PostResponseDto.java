@@ -1,7 +1,6 @@
-package org.example.newspeedproject.post.dto;
+package org.example.newspeedproject.post.dto.reponse;
 
 import lombok.Getter;
-import org.example.newspeedproject.user.entity.User;
 
 import java.time.LocalDateTime;
 

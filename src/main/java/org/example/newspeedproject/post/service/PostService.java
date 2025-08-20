@@ -1,8 +1,8 @@
 package org.example.newspeedproject.post.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.post.dto.PostPageResponseDto;
-import org.example.newspeedproject.post.dto.PostResponseDto;
+import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
+import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.post.repository.PostRepository;
 import org.example.newspeedproject.user.entity.User;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +48,39 @@ public class PostService {
             PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
             dtos.add(dto);
         }
+        return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
+    }
+
+    //게시글 전체 검색 서비스(수정일 기준 내림차순)
+    public PostPageResponseDto findAllByModi(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("modifiedDate").descending());
+        Page<Post> posts =  postRepository.findAll(pageable);
+
+        List<PostResponseDto> dtos = new ArrayList<>();
+        for(Post post : posts) {
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            dtos.add(dto);
+        }
+        return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
+    }
+
+    //게시글 기간별 검색 서비스(생성일 기준 내림차순)
+    public PostPageResponseDto findByDate(LocalDate startDate, LocalDate endDate, int page, int size) {
+
+        //하루 기준을 명확하게 설정 (00시 ~ 23시 59분 59초)
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.plusDays(1).atStartOfDay().minusSeconds(1);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<Post> posts = postRepository.findByCreatedDateBetween(start, end, pageable);
+
+        List<PostResponseDto> dtos = new ArrayList<>();
+        for(Post post : posts) {
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            dtos.add(dto);
+        }
 
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
-
     }
 
     //게시글 상세 검색 서비스
