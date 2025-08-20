@@ -5,6 +5,10 @@ import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.dto.LikeRequest;
 import org.example.newspeedproject.like.entity.Like;
 import org.example.newspeedproject.like.repository.LikeRepository;
+import org.example.newspeedproject.post.entity.Post;
+import org.example.newspeedproject.post.repository.PostRepository;
+import org.example.newspeedproject.user.entity.User;
+import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,10 @@ public class LikeService {
         User user = userRepository.findById(request.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 없습니다.")
         );
+
+        if (likeRepository.findByPostAndUser(post, user).isPresent()) {
+            throw new IllegalArgumentException("이미 좋아요를 눌렀습니다.");
+        }
 
         Like like = new Like(post, user);
 
