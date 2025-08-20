@@ -1,4 +1,4 @@
-package org.example.newspeedproject.user.dto;
+package org.example.newspeedproject.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

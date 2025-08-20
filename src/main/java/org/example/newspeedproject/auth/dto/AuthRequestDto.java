@@ -1,4 +1,4 @@
-package org.example.newspeedproject.user.dto;
+package org.example.newspeedproject.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserRequestDto {
+public class AuthRequestDto {
     @NotBlank
     @Size(min = 1, max = 20, message = "이름은 최소 1자 최대 20자로 설정해야됩니다.")
     private String username;
