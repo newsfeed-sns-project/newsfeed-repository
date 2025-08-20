@@ -8,6 +8,7 @@ import org.example.newspeedproject.auth.dto.AuthRequestDto;
 import org.example.newspeedproject.auth.dto.AuthResponseDto;
 import org.example.newspeedproject.auth.service.AuthService;
 import org.example.newspeedproject.auth.dto.LoginRequestDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users") //auth인데 users로 하는게 맞을까...
+@RequestMapping("/auth") //user 에서 auth로 변경@@
 public class AuthController {
     private final AuthService authService;
 
@@ -24,17 +25,20 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<AuthResponseDto> signup(@RequestBody @Valid AuthRequestDto request) {
         AuthResponseDto response = authService.signup(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     //로그인
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid LoginRequestDto authRequest, HttpServletRequest request) {
-        AuthResponseDto id = authService.login(authRequest);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("LOGIN_USER_ID", id.getId());
-        return ResponseEntity.ok(id);
+        try{
+            AuthResponseDto id = authService.login(authRequest);
+            HttpSession session = request.getSession();
+            session.setAttribute("LOGIN_USER_ID", id.getId());
+            return ResponseEntity.ok(id);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     //로그아웃
@@ -44,6 +48,6 @@ public class AuthController {
         if (session != null) {
             session.invalidate();
         }
-        return ResponseEntity.ok("로그아웃 되었습니다.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
