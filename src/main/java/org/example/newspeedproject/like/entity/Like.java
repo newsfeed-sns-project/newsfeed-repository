@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "likes")
 public class Like extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
