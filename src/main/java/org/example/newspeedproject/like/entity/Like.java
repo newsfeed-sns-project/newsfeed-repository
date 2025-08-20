@@ -3,6 +3,7 @@ package org.example.newspeedproject.like.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.newspeedproject.post.entity.BaseEntity;
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.user.entity.User;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Like {
+public class Like extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")
@@ -31,12 +32,4 @@ public class Like {
         this.post = post;
         this.user = user;
     }
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime modifiedAt;
 }
