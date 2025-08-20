@@ -49,7 +49,7 @@ public class PostService {
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
     }
 
-    //게시글 전체 검색 서비스(페이징, 내림차순)
+    //게시글 전체 검색 서비스(수정일 기준 내림차순)
     public PostPageResponseDto findAllByModi(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("modifiedDate").descending());
         Page<Post> posts =  postRepository.findAll(pageable);
