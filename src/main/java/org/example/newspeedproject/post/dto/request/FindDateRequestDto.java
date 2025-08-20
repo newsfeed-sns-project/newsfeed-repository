@@ -8,10 +8,7 @@ import java.time.LocalDate;
 @Getter
 public class FindDateRequestDto {
 
-    @NotBlank
     private final LocalDate start;
-
-    @NotBlank
     private final LocalDate end;
 
     public FindDateRequestDto(LocalDate start, LocalDate end) {

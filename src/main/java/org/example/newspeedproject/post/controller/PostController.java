@@ -1,5 +1,6 @@
 package org.example.newspeedproject.post.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.post.consts.Const;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
@@ -53,7 +54,7 @@ public class PostController {
 
     //게시물 기간별 검색(생성일 기준)
     @PostMapping("/posts/search")
-    public ResponseEntity<PostPageResponseDto> findByDate(@RequestBody FindDateRequestDto request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<PostPageResponseDto> findByDate(@Valid @RequestBody FindDateRequestDto request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         LocalDate start = request.getStart();
         LocalDate end = request.getEnd();
         PostPageResponseDto result = postService.findByDate(start, end, page, size);
@@ -69,7 +70,7 @@ public class PostController {
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
     @PutMapping("/posts/{id}")
-    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
         postService.updatePost(id, requestDto.getTitle(), requestDto.getContents(), userId);
         return new ResponseEntity<>("*** 게시글 수정 완료 ***", HttpStatus.OK);
     }

@@ -72,7 +72,8 @@ public class PostService {
         LocalDateTime end = endDate.plusDays(1).atStartOfDay().minusSeconds(1);
 
         if (start.isAfter(end)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "날짜를 잘 못 입력하셨습니다..");
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "날짜를 잘 못 입력하셨습니다.");
+            throw new IllegalArgumentException("날짜를 잘 못 입력하셨습니다.");
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
