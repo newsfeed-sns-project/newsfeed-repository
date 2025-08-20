@@ -31,6 +31,13 @@ public class PostController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    //게시물 검색
+    @GetMapping("/posts/array")
+    public ResponseEntity<PostPageResponseDto> findAllByModi(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PostPageResponseDto response = postService.findAllByModi(page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     //게시물 id검색
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostResponseDto> findById(@PathVariable Long id) {

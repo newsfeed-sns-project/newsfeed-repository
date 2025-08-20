@@ -46,9 +46,20 @@ public class PostService {
             PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
             dtos.add(dto);
         }
-
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
+    }
 
+    //게시글 전체 검색 서비스(페이징, 내림차순)
+    public PostPageResponseDto findAllByModi(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("modifiedDate").descending());
+        Page<Post> posts =  postRepository.findAll(pageable);
+
+        List<PostResponseDto> dtos = new ArrayList<>();
+        for(Post post : posts) {
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            dtos.add(dto);
+        }
+        return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
     }
 
     //게시글 상세 검색 서비스
