@@ -8,13 +8,11 @@ import org.example.newspeedproject.post.dto.request.CreatePostRequestDto;
 import org.example.newspeedproject.post.dto.request.FindDateRequestDto;
 import org.example.newspeedproject.post.dto.request.UpdatePostRequestDto;
 import org.example.newspeedproject.post.service.PostService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,14 +22,24 @@ public class PostController {
 
     //게시물 작성
     @PostMapping("/posts")
-    public ResponseEntity<PostResponseDto> create(@RequestBody CreatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
-        PostResponseDto postResponseDto = postService.save(requestDto.getTitle(), requestDto.getContents(), userId);
+    public ResponseEntity<PostResponseDto> create(
+            @RequestBody CreatePostRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+    ) {
+        PostResponseDto postResponseDto = postService.save(
+                requestDto.getTitle(),
+                requestDto.getContents(),
+                userId
+        );
         return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
     }
 
     //게시물 검색
     @GetMapping("/posts")
-    public ResponseEntity<PostPageResponseDto> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<PostPageResponseDto> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         PostPageResponseDto response = postService.findAll(page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

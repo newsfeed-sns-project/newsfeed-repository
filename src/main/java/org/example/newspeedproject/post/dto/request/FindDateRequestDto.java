@@ -1,5 +1,6 @@
 package org.example.newspeedproject.post.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -7,7 +8,10 @@ import java.time.LocalDate;
 @Getter
 public class FindDateRequestDto {
 
+    @NotBlank
     private final LocalDate start;
+
+    @NotBlank
     private final LocalDate end;
 
     public FindDateRequestDto(LocalDate start, LocalDate end) {
