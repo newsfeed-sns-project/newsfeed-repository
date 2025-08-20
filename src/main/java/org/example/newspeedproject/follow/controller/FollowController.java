@@ -3,6 +3,7 @@ package org.example.newspeedproject.follow.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.follow.dto.FollowerResponse;
 import org.example.newspeedproject.follow.dto.FollowingResponse;
 import org.example.newspeedproject.follow.service.FollowService;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class FollowController {
         return ResponseEntity.noContent().build();
     }
 // t 팔로잉 조회(로그인한 유저의 팔로잉 목록을 조회하는 기능)
-    @GetMapping("/me/follows")
+    @GetMapping("/me/followings")
     public ResponseEntity<List<FollowingResponse>> getFollowing(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
@@ -40,9 +41,18 @@ public class FollowController {
         List<FollowingResponse> followings = followService.getFollowings(myUserId);
         return ResponseEntity.ok().body(followings);
     }
-    // t 팔로워 조회(userTargetId = 123번 유저를 팔로우 하고 있는 사람들 목록)
 
-
+    // t 팔로워 조회(로그인한 유저를 팔로우 하고 있는 사람들 목록)
+    @GetMapping("/me/followers")
+    public ResponseEntity<List<FollowerResponse>> getMyFollowers(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+        Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
+        List<FollowerResponse> followers = followService.getFollowers(myUserId);
+        return ResponseEntity.ok(followers);
+    }
 
 
     //팔로우 삭제

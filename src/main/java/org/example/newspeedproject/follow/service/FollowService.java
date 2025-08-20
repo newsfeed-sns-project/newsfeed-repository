@@ -1,6 +1,7 @@
 package org.example.newspeedproject.follow.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.follow.dto.FollowerResponse;
 import org.example.newspeedproject.follow.dto.FollowingResponse;
 import org.example.newspeedproject.follow.entity.Follow;
 import org.example.newspeedproject.follow.repository.FollowRepository;
@@ -55,4 +56,9 @@ public class FollowService {
         }
         return followingResponses;
     }
+
+    public List<FollowerResponse> getFollowers(Long myUserId) {
+    }
+
+    //팔로워 조회
 }

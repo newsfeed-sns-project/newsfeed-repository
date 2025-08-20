@@ -5,9 +5,9 @@ import org.example.newspeedproject.user.entity.User;
 
 @Getter
 public class FollowingResponse {
-    private Long followingId;
-    private String followingUsername;
-    private String followingEmail;
+    private final Long followingId;
+    private final String followingUsername;
+    private final String followingEmail;
 
     public FollowingResponse(User following) {
         this.followingId = following.getId();
