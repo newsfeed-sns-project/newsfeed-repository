@@ -8,7 +8,9 @@ import org.example.newspeedproject.comment.entity.Comment;
 import org.example.newspeedproject.comment.repository.CommentRepository;
 
 import org.example.newspeedproject.post.entity.Post;
+import org.example.newspeedproject.post.repository.PostRepository;
 import org.example.newspeedproject.user.entity.User;
+import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -21,12 +23,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentService {
     private CommentRepository commentRepository;
+    private UserRepository userRepository;
+    private PostRepository postRepository;
 
     @Transactional
     public CommentResponseDto save(Long userId, Long postId, CommentRequestDto commentRequestDto) {
 
-        User user = new User(); //팀원 지원 필요
-        Post post = new Post(); //팀원 지원 필요
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("user not found")); //팀원 지원 필요
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("post not found"));
 
         Comment comment = new Comment(commentRequestDto.getComment(), user, post);
         commentRepository.save(comment);
