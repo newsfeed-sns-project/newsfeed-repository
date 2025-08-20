@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,9 +57,22 @@ public class FollowService {
         }
         return followingResponses;
     }
-
-    public List<FollowerResponse> getFollowers(Long myUserId) {
-    }
-
     //팔로워 조회
+    @Transactional(readOnly = true)
+    public List<FollowerResponse> getFollowers(Long userTargetId) {
+        User user = userRepository.findById(userTargetId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+        );
+
+        List<Follow> follows = followRepository.findAllByFollowing(user);
+
+        return follows.stream()
+                .map(follow -> new FollowerResponse(follow.getFollower()))
+                .collect(Collectors.toList());
+    }
+    //팔로워 삭제
+
 }
+
+
+
