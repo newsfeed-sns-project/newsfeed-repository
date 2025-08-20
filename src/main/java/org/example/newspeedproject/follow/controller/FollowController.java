@@ -55,5 +55,15 @@ public class FollowController {
     }
 
 
-    //팔로우 삭제
+    // 언팔로우 (내가 팔로우하고 있는 사람 삭제)
+    @DeleteMapping("/{userToUnfollowId}/follows")
+    public ResponseEntity<Void> unfollow(@PathVariable Long userToUnfollowId, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+        Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
+        followService.unfollow(myUserId, userToUnfollowId);
+        return ResponseEntity.noContent().build();
+    }
 }
