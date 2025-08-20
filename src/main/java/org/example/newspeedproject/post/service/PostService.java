@@ -1,10 +1,11 @@
-package org.example.newspeedproject.service;
+package org.example.newspeedproject.post.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.dto.PostPageResponseDto;
-import org.example.newspeedproject.dto.PostResponseDto;
-import org.example.newspeedproject.entity.Post;
-import org.example.newspeedproject.repository.PostRepository;
+import org.example.newspeedproject.post.dto.PostPageResponseDto;
+import org.example.newspeedproject.post.dto.PostResponseDto;
+import org.example.newspeedproject.post.entity.Post;
+import org.example.newspeedproject.post.repository.PostRepository;
+import org.example.newspeedproject.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,11 +28,12 @@ public class PostService {
 
     //게시글 생성 서비스
     @Transactional
-    public PostResponseDto save(String title, String contents) {
-        Post post = new Post(title, contents);
+    public PostResponseDto save(String title, String contents, Long userId) {
+        User user = User.fromUserId(userId);
+        Post post = new Post(title, contents, user);
         Post savedPost = postRepository.save(post);
 
-        return new PostResponseDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContents(), savedPost.getCreatedDate(), savedPost.getModifiedDate());
+        return new PostResponseDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContents(), savedPost.getCreatedDate(), savedPost.getModifiedDate(), user.getId());
     }
 
     //게시글 전체 검색 서비스(페이징, 내림차순)
@@ -41,7 +43,7 @@ public class PostService {
 
         List<PostResponseDto> dtos = new ArrayList<>();
         for(Post post : posts) {
-            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate());
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
             dtos.add(dto);
         }
 
@@ -57,48 +59,34 @@ public class PostService {
         }
 
         Post findPost = posted.get();
-        return new PostResponseDto(findPost.getId(), findPost.getTitle(), findPost.getContents(), findPost.getCreatedDate(), findPost.getModifiedDate());
+        return new PostResponseDto(findPost.getId(), findPost.getTitle(), findPost.getContents(), findPost.getCreatedDate(), findPost.getModifiedDate(), findPost.getUser().getId());
     }
 
+    // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
     //게시글 수정 서비스
     @Transactional
-    public void updatePost(Long id, String title, String contents) {
+    public void updatePost(Long id, String title, String contents, Long userId) {
         Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
+
+        //작성자가 아닌 경우 예외처리 발생
+        if (!userId.equals(posted.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+        }
+
         posted.updatePost(title, contents);
     }
 
     //게시글 삭제 서비스
     @Transactional
-    public void deletePost(Long id) {
+    public void deletePost(Long id, Long userId) {
         Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
+
+        //작성자가 아닌 경우 예외처리 발생
+        if (!userId.equals(posted.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+        }
+
         postRepository.delete(posted);
     }
-
-    // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
-    //게시글 수정 서비스
-//    @Transactional
-//    public void updatePost(Long id, String title, String contents, Long userId) {
-//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
-//
-//        //작성자가 아닌 경우 예외처리 발생
-//        if (!userId.equals(posted.getUser().getId()) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
-//        }
-//
-//        posted.updatePost(title, contents);
-//    }
-//
-//    //게시글 삭제 서비스
-//    @Transactional
-//    public void deletePost(Long id, Long userId) {
-//        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
-//
-//        //작성자가 아닌 경우 예외처리 발생
-//        if (!userId.equals(posted.getUser().getId()) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
-//        }
-//
-//        postRepository.delete(posted);
-//    }
 
 }
