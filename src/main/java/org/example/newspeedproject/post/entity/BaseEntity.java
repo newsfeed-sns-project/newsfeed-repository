@@ -1,4 +1,4 @@
-package org.example.newspeedproject.entity;
+package org.example.newspeedproject.post.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
