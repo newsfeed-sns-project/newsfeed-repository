@@ -1,5 +1,6 @@
 package org.example.newspeedproject.post.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 import java.time.LocalDate;

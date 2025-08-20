@@ -1,5 +1,6 @@
 package org.example.newspeedproject.post.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.post.consts.Const;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
@@ -8,13 +9,11 @@ import org.example.newspeedproject.post.dto.request.CreatePostRequestDto;
 import org.example.newspeedproject.post.dto.request.FindDateRequestDto;
 import org.example.newspeedproject.post.dto.request.UpdatePostRequestDto;
 import org.example.newspeedproject.post.service.PostService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,14 +23,24 @@ public class PostController {
 
     //게시물 작성
     @PostMapping("/posts")
-    public ResponseEntity<PostResponseDto> create(@RequestBody CreatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
-        PostResponseDto postResponseDto = postService.save(requestDto.getTitle(), requestDto.getContents(), userId);
+    public ResponseEntity<PostResponseDto> create(
+            @RequestBody CreatePostRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+    ) {
+        PostResponseDto postResponseDto = postService.save(
+                requestDto.getTitle(),
+                requestDto.getContents(),
+                userId
+        );
         return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
     }
 
     //게시물 검색
     @GetMapping("/posts")
-    public ResponseEntity<PostPageResponseDto> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<PostPageResponseDto> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         PostPageResponseDto response = postService.findAll(page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -45,7 +54,7 @@ public class PostController {
 
     //게시물 기간별 검색(생성일 기준)
     @PostMapping("/posts/search")
-    public ResponseEntity<PostPageResponseDto> findByDate(@RequestBody FindDateRequestDto request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<PostPageResponseDto> findByDate(@Valid @RequestBody FindDateRequestDto request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         LocalDate start = request.getStart();
         LocalDate end = request.getEnd();
         PostPageResponseDto result = postService.findByDate(start, end, page, size);
@@ -61,7 +70,7 @@ public class PostController {
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
     @PutMapping("/posts/{id}")
-    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequestDto requestDto, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
         postService.updatePost(id, requestDto.getTitle(), requestDto.getContents(), userId);
         return new ResponseEntity<>("*** 게시글 수정 완료 ***", HttpStatus.OK);
     }

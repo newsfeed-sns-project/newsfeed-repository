@@ -71,6 +71,11 @@ public class PostService {
         LocalDateTime start = startDate.atStartOfDay();
         LocalDateTime end = endDate.plusDays(1).atStartOfDay().minusSeconds(1);
 
+        if (start.isAfter(end)) {
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "날짜를 잘 못 입력하셨습니다.");
+            throw new IllegalArgumentException("날짜를 잘 못 입력하셨습니다.");
+        }
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<Post> posts = postRepository.findByCreatedDateBetween(start, end, pageable);
 
@@ -85,13 +90,10 @@ public class PostService {
 
     //게시글 상세 검색 서비스
     public PostResponseDto findById(Long id) {
-        Optional<Post> posted = postRepository.findById(id);
-        if(posted.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "작성된 게시글이 없습니다.");
-        }
+        Post posted = postRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 스케줄이 존재하지 않습니다."));
 
-        Post findPost = posted.get();
-        return new PostResponseDto(findPost.getId(), findPost.getTitle(), findPost.getContents(), findPost.getCreatedDate(), findPost.getModifiedDate(), findPost.getUser().getId());
+        return new PostResponseDto(posted.getId(), posted.getTitle(), posted.getContents(), posted.getCreatedDate(), posted.getModifiedDate(), posted.getUser().getId());
     }
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
