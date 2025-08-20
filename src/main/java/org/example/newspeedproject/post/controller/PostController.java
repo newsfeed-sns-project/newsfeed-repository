@@ -2,14 +2,19 @@ package org.example.newspeedproject.post.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.post.consts.Const;
-import org.example.newspeedproject.post.dto.CreatePostRequestDto;
-import org.example.newspeedproject.post.dto.PostPageResponseDto;
-import org.example.newspeedproject.post.dto.PostResponseDto;
-import org.example.newspeedproject.post.dto.UpdatePostRequestDto;
+import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
+import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
+import org.example.newspeedproject.post.dto.request.CreatePostRequestDto;
+import org.example.newspeedproject.post.dto.request.FindDateRequestDto;
+import org.example.newspeedproject.post.dto.request.UpdatePostRequestDto;
 import org.example.newspeedproject.post.service.PostService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,9 +38,18 @@ public class PostController {
 
     //게시물 검색(수정일 기준)
     @GetMapping("/posts/array")
-    public ResponseEntity<PostPageResponseDto> findAllByModi(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+    public ResponseEntity<PostPageResponseDto> findAllByModi(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         PostPageResponseDto response = postService.findAllByModi(page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    //게시물 기간별 검색(생성일 기준)
+    @PostMapping("/posts/search")
+    public ResponseEntity<PostPageResponseDto> findByDate(@RequestBody FindDateRequestDto request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        LocalDate start = request.getStart();
+        LocalDate end = request.getEnd();
+        PostPageResponseDto result = postService.findByDate(start, end, page, size);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //게시물 id검색
