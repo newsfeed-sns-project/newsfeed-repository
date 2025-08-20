@@ -2,7 +2,6 @@ package org.example.newspeedproject.like.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.like.dto.LikeResponse;
-import org.example.newspeedproject.like.dto.LikeRequest;
 import org.example.newspeedproject.like.entity.Like;
 import org.example.newspeedproject.like.repository.LikeRepository;
 import org.example.newspeedproject.post.entity.Post;
@@ -23,12 +22,12 @@ public class LikeService {
     private final UserRepository userRepository;
 
     @Transactional
-    public LikeResponse addLike(LikeRequest request) {
-        Post post = postRepository.findById(request.getPostId()).orElseThrow(
+    public LikeResponse addLike(Long postId, Long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.")
         );
 
-        User user = userRepository.findById(request.getUserId()).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
         );
 
@@ -37,7 +36,6 @@ public class LikeService {
         }
 
         Like like = new Like(post, user);
-
         Like savedLike = likeRepository.save(like);
 
         return new LikeResponse(
@@ -49,10 +47,13 @@ public class LikeService {
     }
 
     @Transactional
-    public LikeResponse deleteLike(Long likeId) {
+    public LikeResponse deleteLike(Long likeId, Long userId) {
         Like like = likeRepository.findById(likeId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "좋아요가 없습니다."));
 
+        if (!like.getUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+        }
         likeRepository.delete(like);
 
         return new LikeResponse(
