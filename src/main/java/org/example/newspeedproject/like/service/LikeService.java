@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -42,7 +44,9 @@ public class LikeService {
                 savedLike.getId(),
                 post.getId(),
                 user.getId(),
-                "좋아요가 완료되었습니다."
+                "좋아요가 완료되었습니다.",
+                savedLike.getCreatedDate(),
+                savedLike.getModifiedDate()
         );
     }
 
@@ -54,12 +58,18 @@ public class LikeService {
         if (!like.getUser().getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
+
+        LocalDateTime modifiedDate = LocalDateTime.now();
+
         likeRepository.delete(like);
 
         return new LikeResponse(
                 like.getId(),
                 like.getPost().getId(),
                 like.getUser().getId(),
-                "좋아요가 취소되었습니다.");
+                "좋아요가 취소되었습니다.",
+                null,
+                modifiedDate
+        );
     }
 }
