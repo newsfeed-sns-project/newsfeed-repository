@@ -23,9 +23,9 @@ public class FollowController {
     @PostMapping("/{userTargetId}/follows")
     public ResponseEntity<Void> addFollow(@PathVariable Long userTargetId, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요이 필요합니다.");
-        }
+//        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+//        }
         Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
         followService.addFollow(myUserId, userTargetId);
         return ResponseEntity.noContent().build();
@@ -34,9 +34,9 @@ public class FollowController {
     @GetMapping("/me/followings")
     public ResponseEntity<List<FollowingResponse>> getFollowing(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요이 필요합니다.");
-        }
+        //        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+        //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        //        }
         Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
         List<FollowingResponse> followings = followService.getFollowings(myUserId);
         return ResponseEntity.ok().body(followings);
@@ -46,14 +46,24 @@ public class FollowController {
     @GetMapping("/me/followers")
     public ResponseEntity<List<FollowerResponse>> getMyFollowers(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
-        }
+//        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+//        }
         Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
         List<FollowerResponse> followers = followService.getFollowers(myUserId);
         return ResponseEntity.ok(followers);
     }
 
 
-    //팔로우 삭제
+    // 언팔로우 (내가 팔로우하고 있는 사람 삭제)
+    @DeleteMapping("/{userToUnfollowId}/follows")
+    public ResponseEntity<Void> unfollow(@PathVariable Long userToUnfollowId, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+//        }
+        Long myUserId = (Long) session.getAttribute("LOGIN_USER_ID");
+        followService.unfollow(myUserId, userToUnfollowId);
+        return ResponseEntity.noContent().build();
+    }
 }
