@@ -21,7 +21,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto findUserId(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
-        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreateAt(), user.getModifiedAt());
+        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(), user.getModifiedAt());
     }
 
     @Transactional
@@ -29,7 +29,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
 
         user.updateUser(request.getUsername(), request.getEmail());
-        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreateAt(), user.getModifiedAt());
+        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(), user.getModifiedAt());
     }
 
     @Transactional
