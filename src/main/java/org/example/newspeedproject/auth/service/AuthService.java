@@ -26,7 +26,7 @@ public class AuthService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user = new User(request.getUsername(), request.getEmail(), encodedPassword);
         User savedUser = userRepository.save(user);
-        return new AuthResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getCreatedDateAt(), savedUser.getModifiedDateAt());
+        return new AuthResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getCreateAt(), savedUser.getModifiedAt());
     }
 
     @Transactional
@@ -36,6 +36,6 @@ public class AuthService {
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
         }
-        return new AuthResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedDateAt(), user.getModifiedDateAt());
+        return new AuthResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreateAt(), user.getModifiedAt());
     }
 }
