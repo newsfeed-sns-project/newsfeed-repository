@@ -1,5 +1,6 @@
 package org.example.newspeedproject.auth.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.auth.dto.AuthRequestDto;
 import org.example.newspeedproject.auth.dto.AuthResponseDto;
@@ -20,7 +21,7 @@ public class AuthService {
 
     public AuthResponseDto signup(AuthRequestDto request) {
         userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다.");
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         });
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -31,7 +32,7 @@ public class AuthService {
 
     @Transactional
     public AuthResponseDto login(LoginRequestDto request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new EntityNotFoundException("유저가 존재하지 않습니다."));
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
