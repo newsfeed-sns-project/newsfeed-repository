@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -80,5 +81,14 @@ public class PostController {
     public ResponseEntity<String> deletePost(@PathVariable Long id, @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
         postService.deletePost(id, userId);
         return new ResponseEntity<>("*** 게시글 삭제 성공 ***", HttpStatus.OK);
+    }
+
+    // 뉴스피드에 내가 팔로우한 사람의 게시물들을 최신순으로 볼 수 있습니다.
+    @GetMapping("/posts/me/followpost")
+    public ResponseEntity<List<PostResponseDto>> followPost(
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+    ){
+        List<PostResponseDto> newsfeedPosts = postService.getNewsfeedPosts(userId);
+        return new ResponseEntity<>(newsfeedPosts, HttpStatus.OK);
     }
 }

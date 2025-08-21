@@ -90,6 +90,17 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
+    // 팔로잉 하는 사용자 목록을 User 엔티티 타입으로 반환
+    @Transactional(readOnly = true)
+    public List<User> getFollowingsUsers(Long myUserId) {
+        User myUser = userRepository.findById(myUserId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+        );
+        List<Follow> follows = followRepository.findAllByFollower(myUser);
+        return follows.stream()
+                .map(Follow::getFollowing)
+                .collect(Collectors.toList());
+    }
 }
 
 
