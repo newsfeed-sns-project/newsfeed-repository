@@ -27,7 +27,6 @@ public class UserService {
     @Transactional
     public UserResponseDto updateUserProfile(Long id, ProfileChangeRequestDto request) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("유저가 존재하지 않습니다."));
-
         user.updateUser(request.getUsername(), request.getEmail());
         return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(), user.getModifiedAt());
     }
