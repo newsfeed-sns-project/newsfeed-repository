@@ -70,7 +70,24 @@ public class FollowService {
                 .map(follow -> new FollowerResponse(follow.getFollower()))
                 .collect(Collectors.toList());
     }
-    //팔로워 삭제
+
+    @Transactional
+    public void unfollow(Long myUserId, Long userToUnfollowId) {
+        if (myUserId.equals(userToUnfollowId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 언팔로우할 수 없습니다.");
+        }
+        User myUser = userRepository.findById(myUserId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+        );
+        User userToUnfollow = userRepository.findById(userToUnfollowId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "언팔로우할 유저를 찾을 수 없습니다.")
+        );
+
+        Follow follow = followRepository.findByFollowerAndFollowing(myUser, userToUnfollow).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 팔로우 관계를 찾을 수 없습니다.")
+        );
+        followRepository.delete(follow);
+    }
 
 }
 
