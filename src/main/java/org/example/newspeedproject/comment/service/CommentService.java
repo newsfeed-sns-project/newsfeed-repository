@@ -1,6 +1,7 @@
 package org.example.newspeedproject.comment.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.comment.dto.CommentRequestDto;
 import org.example.newspeedproject.comment.dto.CommentResponseDto;
@@ -29,9 +30,9 @@ public class CommentService {
     @Transactional
     public CommentResponseDto save(Long userId, Long postId, CommentRequestDto commentRequestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 유저가 존재하지 않습니다."));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 피드가 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 피드가 존재하지 않습니다."));
         Comment comment = new Comment(commentRequestDto.getComment(), user, post);
         commentRepository.save(comment);
 
@@ -44,7 +45,7 @@ public class CommentService {
         Comment comment = commentRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new IllegalArgumentException("comment not found"));
+                        () -> new EntityNotFoundException("comment not found"));
         return new CommentResponseDto(comment.getComment());
     }
 
@@ -59,7 +60,7 @@ public class CommentService {
 
     @Transactional
     public CommentResponseDto update(Long id, CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("comment not found"));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("comment not found"));
         comment.update(commentRequestDto.getComment());
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getComment());
@@ -67,7 +68,7 @@ public class CommentService {
 
     @Transactional
     public void delete(Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("comment not found"));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("comment not found"));
         commentRepository.delete(comment);
     }
 }

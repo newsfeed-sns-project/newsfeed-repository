@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     }
 
     // EntityNotFoundException 처리
-    // 모든 예외 처리
+    // DB에서 엔티티를 못 찾았을 때
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(EntityNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     // UnauthorizedException 처리
-    // 모든 예외 처리
+    // 로그인/인증 필요
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleException(UnauthorizedException ex) {
         ErrorResponse error = new ErrorResponse(
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     }
 
     // ForbiddenException 처리
-    // 모든 예외 처리
+    // 로그인은 되었지만, 권한 필요
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorResponse> handleException(ForbiddenException ex) {
         ErrorResponse error = new ErrorResponse(
