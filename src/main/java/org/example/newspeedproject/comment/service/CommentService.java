@@ -40,7 +40,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public CommentResponseDto findone(Long id) {
+    public CommentResponseDto findOne(Long id) {
         Comment comment = commentRepository
                 .findById(id)
                 .orElseThrow(
