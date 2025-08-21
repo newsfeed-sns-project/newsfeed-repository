@@ -31,7 +31,7 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
 
         if (!user.getPassword().equals(request.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return new AuthResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedDateAt(), user.getModifiedDateAt());
     }
