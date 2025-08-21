@@ -15,7 +15,6 @@ public class PasswordChangeRequestDto {
     @Pattern(regexp = PASSWORD_REGEX, message = "비밀번호는 최소 8자 최대 100자로 설정해야됩니다.")
     private String oldpassword;
 
-
     @NotBlank
     @Pattern(regexp = PASSWORD_REGEX, message = "비밀번호는 최소 8자 최대 100자로 설정해야됩니다.")
     private String newpassword;

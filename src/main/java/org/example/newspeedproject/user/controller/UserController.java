@@ -21,12 +21,7 @@ public class UserController {
     //비밀번호 수정
     @PatchMapping("/me/password")
     public ResponseEntity<String> passwordChange(@RequestBody @Valid PasswordChangeRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+        Long id = (Long) request.getSession().getAttribute("LOGIN_USER_ID");
         userService.passwordChange(id, userRequest);
         return ResponseEntity.ok("비밀번호를 수정하였습니다.");
     }
@@ -34,11 +29,7 @@ public class UserController {
     //프로필 수정
     @PatchMapping("/me/profile")
     public ResponseEntity<UserResponseDto> updateProfile(@RequestBody @Valid ProfileChangeRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+        Long id = (Long) request.getSession().getAttribute("LOGIN_USER_ID");
         UserResponseDto response = userService.updateUserProfile(id, userRequest);
         return ResponseEntity.ok(response);
     }
@@ -46,11 +37,7 @@ public class UserController {
     //프로필 조회
     @GetMapping("/me/profile")
     public ResponseEntity<UserResponseDto> getProfile(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+        Long id = (Long) request.getSession().getAttribute("LOGIN_USER_ID");
         UserResponseDto response = userService.findUserId(id);
         return ResponseEntity.ok(response);
     }
@@ -58,13 +45,9 @@ public class UserController {
     //회원 탈퇴
     @DeleteMapping("/me")
     public ResponseEntity<String> deleteUser(@RequestBody @Valid LoginRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+        Long id = (Long) request.getSession().getAttribute("LOGIN_USER_ID");
         userService.deleteUser(id, userRequest);
-        session.invalidate();
+        request.getSession().invalidate();
         return ResponseEntity.ok("회원 탈퇴 성공");
     }
 }
