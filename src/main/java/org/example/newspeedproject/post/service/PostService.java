@@ -1,6 +1,7 @@
 package org.example.newspeedproject.post.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.follow.service.FollowService;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
 import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
 import org.example.newspeedproject.post.entity.Post;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,8 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final FollowService followService; //팔로우한 사람들의 게시물을 받아오기 위해서 선언
+
 
     //게시글 생성 서비스
     @Transactional
@@ -122,5 +126,22 @@ public class PostService {
 
         postRepository.delete(posted);
     }
+    // 내가 팔로우한 사람들의 게시물 최신순으로 조회
+    @Transactional
+    public List<PostResponseDto> getNewsfeedPosts(Long userId) {
+        // 팔로우 서비스에서  내가 팔로우 하는 user 목록 가져오기
+        List<User> followedUsers = followService.getFollowingsUsers(userId);
+        //  팔로우하는 사람들의 게시물만 최신순으로 조회
+        List<Post> newsfeedPosts = postRepository.findAllByUserInOrderByCreatedDateDesc(followedUsers);
 
+        return newsfeedPosts.stream()
+                .map(post -> new PostResponseDto(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getContents(),
+                        post.getCreatedDate(),
+                        post.getModifiedDate(),
+                        post.getUser().getId()))
+                .collect(Collectors.toList());
+    }
 }
