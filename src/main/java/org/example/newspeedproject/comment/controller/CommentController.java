@@ -26,7 +26,7 @@ public class CommentController {
 
     @GetMapping("/posts/comments/{id}")
     public ResponseEntity<CommentResponseDto> findOne(@PathVariable Long id, @SessionAttribute(name = "LOGIN_USER") Long userId) {
-        return ResponseEntity.ok(commentService.findone(id));
+        return ResponseEntity.ok(commentService.findOne(id));
 
     }
 
