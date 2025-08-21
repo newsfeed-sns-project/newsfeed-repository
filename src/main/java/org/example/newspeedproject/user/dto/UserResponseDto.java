@@ -11,14 +11,14 @@ public class UserResponseDto {
     private Long id;
     private String username;
     private String email;
-    private LocalDateTime createdDateAt;
-    private LocalDateTime modifiedDateAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
-    public UserResponseDto(Long id, String username, String email, LocalDateTime createdDateAt, LocalDateTime modifiedDateAt) {
+    public UserResponseDto(Long id, String username, String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.createdDateAt = createdDateAt;
-        this.modifiedDateAt = modifiedDateAt;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 }
