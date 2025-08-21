@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.follow.dto.FollowerResponse;
 import org.example.newspeedproject.follow.dto.FollowingResponse;
 import org.example.newspeedproject.follow.service.FollowService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -19,12 +20,12 @@ public class FollowController {
 
     // 이웃 추가 (POST)
     @PostMapping("/{userTargetId}/follows")
-    public ResponseEntity<Void> addFollow(
+    public ResponseEntity<String> addFollow(
             @PathVariable Long userTargetId,
             @SessionAttribute("LOGIN_USER_ID") Long myUserId
     ) {
         followService.addFollow(myUserId, userTargetId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("**팔로우 추가**");
     }
 
     //  팔로잉 조회 (내가 팔로우하는 사람들)
@@ -47,11 +48,11 @@ public class FollowController {
 
     //  언팔로우 (내가 팔로우한 사람 해제)
     @DeleteMapping("/{userToUnfollowId}/follows")
-    public ResponseEntity<Void> unfollow(
+    public ResponseEntity<String> unfollow(
             @PathVariable Long userToUnfollowId,
             @SessionAttribute("LOGIN_USER_ID") Long myUserId
     ) {
         followService.unfollow(myUserId, userToUnfollowId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("**팔로우가 취소**");
     }
 }
