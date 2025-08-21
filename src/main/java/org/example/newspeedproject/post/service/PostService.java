@@ -1,7 +1,9 @@
 package org.example.newspeedproject.post.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.follow.service.FollowService;
+import org.example.newspeedproject.commo.exception.UnauthorizedException;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
 import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
 import org.example.newspeedproject.post.entity.Post;
@@ -11,10 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +77,6 @@ public class PostService {
         LocalDateTime end = endDate.plusDays(1).atStartOfDay().minusSeconds(1);
 
         if (start.isAfter(end)) {
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "날짜를 잘 못 입력하셨습니다.");
             throw new IllegalArgumentException("날짜를 잘 못 입력하셨습니다.");
         }
 
@@ -95,7 +95,7 @@ public class PostService {
     //게시글 상세 검색 서비스
     public PostResponseDto findById(Long id) {
         Post posted = postRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 스케줄이 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 스케줄이 존재하지 않습니다."));
 
         return new PostResponseDto(posted.getId(), posted.getTitle(), posted.getContents(), posted.getCreatedDate(), posted.getModifiedDate(), posted.getUser().getId());
     }
@@ -104,11 +104,11 @@ public class PostService {
     //게시글 수정 서비스
     @Transactional
     public void updatePost(Long id, String title, String contents, Long userId) {
-        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 없습니다."));
+        Post posted = postRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("게시글이 없습니다."));
 
         //작성자가 아닌 경우 예외처리 발생
         if (!userId.equals(posted.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+            throw new UnauthorizedException("작성자만 수정할 수 있습니다.");
         }
 
         posted.updatePost(title, contents);
@@ -117,15 +117,15 @@ public class PostService {
     //게시글 삭제 서비스
     @Transactional
     public void deletePost(Long id, Long userId) {
-        Post posted = postRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 할 게시글이 없습니다."));
+        Post posted = postRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("삭제 할 게시글이 없습니다."));
 
         //작성자가 아닌 경우 예외처리 발생
         if (!userId.equals(posted.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+            throw new UnauthorizedException("작성자만 수정할 수 있습니다.");
         }
-
         postRepository.delete(posted);
     }
+
     // 내가 팔로우한 사람들의 게시물 최신순으로 조회
     @Transactional
     public List<PostResponseDto> getNewsfeedPosts(Long userId) {

@@ -22,16 +22,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private CommentRepository commentRepository;
-    private UserRepository userRepository;
-    private PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Transactional
     public CommentResponseDto save(Long userId, Long postId, CommentRequestDto commentRequestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 피드가 존재하지 않습니다."));
         Comment comment = new Comment(commentRequestDto.getComment(), user, post);
         commentRepository.save(comment);
 
@@ -40,7 +40,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public CommentResponseDto findone(Long id) {
+    public CommentResponseDto findOne(Long id) {
         Comment comment = commentRepository
                 .findById(id)
                 .orElseThrow(

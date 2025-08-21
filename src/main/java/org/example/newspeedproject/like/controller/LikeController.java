@@ -23,9 +23,6 @@ public class LikeController {
             @PathVariable Long postId,
             @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
 
-        if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
-        }
         LikeResponse response = likeService.addLike(postId, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -34,10 +31,6 @@ public class LikeController {
     public ResponseEntity<LikeResponse> deleteLike(
             @PathVariable Long likeId,
             @SessionAttribute(name = Const.LOGIN_USER) Long userId) {
-
-        if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
-        }
 
         LikeResponse response = likeService.deleteLike(likeId, userId);
         return ResponseEntity.ok(response);
