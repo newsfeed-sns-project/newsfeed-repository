@@ -1,4 +1,4 @@
-package org.example.newspeedproject.exception;
+package org.example.newspeedproject.commo.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

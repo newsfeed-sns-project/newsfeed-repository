@@ -1,16 +1,29 @@
-package org.example.newspeedproject.exception;
+package org.example.newspeedproject.commo.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import java.nio.file.AccessDeniedException;
+//import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    // EntityNotFoundException 처리
+    // 모든 예외 처리
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleException(UnauthorizedException ex) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
 
     // IllegalArgumentException 처리
     // 잘못된 인자가 전달됐을 때 발생. 메서드 호출 시 파라미터 값이 유효하지 않을 때
@@ -51,19 +64,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    // AccessDeniedException 처리
-    // 모든 예외 처리
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleException(AccessDeniedException ex) {
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.FORBIDDEN.value(),
-                HttpStatus.FORBIDDEN.getReasonPhrase(),
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
-    }
+//    // AccessDeniedException 처리
+//    // 모든 예외 처리
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<ErrorResponse> handleException(AccessDeniedException ex) {
+//        ErrorResponse error = new ErrorResponse(
+//                HttpStatus.FORBIDDEN.value(),
+//                HttpStatus.FORBIDDEN.getReasonPhrase(),
+//                ex.getMessage(),
+//                LocalDateTime.now()
+//        );
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+//    }
 }
-
-
-
