@@ -1,6 +1,7 @@
 package org.example.newspeedproject.follow.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.commo.consts.Const;
 import org.example.newspeedproject.follow.dto.FollowerResponse;
 import org.example.newspeedproject.follow.dto.FollowingResponse;
 import org.example.newspeedproject.follow.service.FollowService;
@@ -21,7 +22,7 @@ public class FollowController {
     @PostMapping("/{userTargetId}/follows")
     public ResponseEntity<Void> addFollow(
             @PathVariable Long userTargetId,
-            @SessionAttribute("LOGIN_USER_ID") Long myUserId
+            @SessionAttribute(name = Const.LOGIN_USER) Long myUserId
     ) {
         followService.addFollow(myUserId, userTargetId);
         return ResponseEntity.noContent().build();
@@ -30,7 +31,7 @@ public class FollowController {
     //  팔로잉 조회 (내가 팔로우하는 사람들)
     @GetMapping("/me/followings")
     public ResponseEntity<List<FollowingResponse>> getFollowing(
-            @SessionAttribute("LOGIN_USER_ID") Long myUserId
+            @SessionAttribute(name = Const.LOGIN_USER) Long myUserId
     ) {
         List<FollowingResponse> followings = followService.getFollowings(myUserId);
         return ResponseEntity.ok(followings);
@@ -39,7 +40,7 @@ public class FollowController {
     //  팔로워 조회 (나를 팔로우하는 사람들)
     @GetMapping("/me/followers")
     public ResponseEntity<List<FollowerResponse>> getMyFollowers(
-            @SessionAttribute("LOGIN_USER_ID") Long myUserId
+            @SessionAttribute(name = Const.LOGIN_USER) Long myUserId
     ) {
         List<FollowerResponse> followers = followService.getFollowers(myUserId);
         return ResponseEntity.ok(followers);

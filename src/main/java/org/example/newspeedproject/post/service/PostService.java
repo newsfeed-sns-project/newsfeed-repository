@@ -1,5 +1,4 @@
 package org.example.newspeedproject.post.service;
-
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.follow.service.FollowService;
@@ -15,12 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -142,6 +139,6 @@ public class PostService {
                         post.getCreatedDate(),
                         post.getModifiedDate(),
                         post.getUser().getId()))
-                .collect(Collectors.toList());
+                        .collect(Collectors.toList());
     }
 }
