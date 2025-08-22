@@ -20,6 +20,9 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto findUserId(Long id) {
+        if(id == null) {
+            throw new EntityNotFoundException("유저가 존재하지 않습니다.");
+        }
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("유저가 존재하지 않습니다."));
         return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(), user.getModifiedAt());
     }

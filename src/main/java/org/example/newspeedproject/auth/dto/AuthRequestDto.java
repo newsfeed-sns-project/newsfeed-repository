@@ -15,7 +15,7 @@ public class AuthRequestDto {
     private String username;
 
     private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+            "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
     @NotBlank
     @Pattern(regexp = EMAIL_REGEX, message = "올바른 이메일 형식이 아닙니다.")
     @Email(message = "이메일 형식이 아닙니다.")
@@ -25,6 +25,6 @@ public class AuthRequestDto {
     private static final String PASSWORD_REGEX =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).{8,100}$";
     @NotBlank
-    @Pattern(regexp = PASSWORD_REGEX, message = "비밀번호는 최소 8자 최대 100자로 설정해야됩니다.")
+    @Pattern(regexp = PASSWORD_REGEX, message = "비밀번호는 최소 8자 이상, 영문 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.")
     private String password;
 }
