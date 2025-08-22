@@ -31,14 +31,10 @@ public class AuthController {
     //로그인
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid LoginRequestDto authRequest, HttpServletRequest request) {
-        try{
-            AuthResponseDto id = authService.login(authRequest);
-            HttpSession session = request.getSession();
-            session.setAttribute("LOGIN_USER_ID", id.getId());
-            return ResponseEntity.ok(id);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        AuthResponseDto id = authService.login(authRequest);
+        HttpSession session = request.getSession();
+        session.setAttribute("LOGIN_USER_ID", id.getId());
+        return ResponseEntity.ok(id);
     }
 
     //로그아웃

@@ -15,7 +15,7 @@ public class ProfileChangeRequestDto {
     private String username;
 
     private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+            "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
     @NotBlank
     @Pattern(regexp = EMAIL_REGEX, message = "올바른 이메일 형식이 아닙니다.")
     @Email(message = "이메일 형식이 아닙니다.")
