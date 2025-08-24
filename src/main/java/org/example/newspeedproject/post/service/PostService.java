@@ -2,8 +2,8 @@ package org.example.newspeedproject.post.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.follow.service.FollowService;
 import org.example.newspeedproject.commo.exception.UnauthorizedException;
+import org.example.newspeedproject.follow.service.FollowService;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
 import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
 import org.example.newspeedproject.post.entity.Post;
@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +39,7 @@ public class PostService {
         Post post = new Post(title, contents, user);
         Post savedPost = postRepository.save(post);
 
-        return new PostResponseDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContents(), savedPost.getCreatedDate(), savedPost.getModifiedDate(), user.getId());
+        return new PostResponseDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContents(), savedPost.getCreatedAt(), savedPost.getModifiedAt(), user.getId());
     }
 
     //게시글 전체 검색 서비스(페이징, 내림차순)
@@ -50,7 +49,7 @@ public class PostService {
 
         List<PostResponseDto> dtos = new ArrayList<>();
         for(Post post : posts) {
-            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedAt(), post.getModifiedAt(), post.getUser().getId());
             dtos.add(dto);
         }
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
@@ -63,7 +62,7 @@ public class PostService {
 
         List<PostResponseDto> dtos = new ArrayList<>();
         for(Post post : posts) {
-            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedAt(), post.getModifiedAt(), post.getUser().getId());
             dtos.add(dto);
         }
         return new PostPageResponseDto(dtos, posts.getNumber(), posts.getTotalPages(), posts.getTotalElements());
@@ -81,11 +80,11 @@ public class PostService {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Post> posts = postRepository.findByCreatedDateBetween(start, end, pageable);
+        Page<Post> posts = postRepository.findByCreatedAtBetween(start, end, pageable);
 
         List<PostResponseDto> dtos = new ArrayList<>();
         for(Post post : posts) {
-            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedDate(), post.getModifiedDate(), post.getUser().getId());
+            PostResponseDto dto = new PostResponseDto(post.getId(), post.getTitle(), post.getContents(), post.getCreatedAt(), post.getModifiedAt(), post.getUser().getId());
             dtos.add(dto);
         }
 
@@ -97,7 +96,7 @@ public class PostService {
         Post posted = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 스케줄이 존재하지 않습니다."));
 
-        return new PostResponseDto(posted.getId(), posted.getTitle(), posted.getContents(), posted.getCreatedDate(), posted.getModifiedDate(), posted.getUser().getId());
+        return new PostResponseDto(posted.getId(), posted.getTitle(), posted.getContents(), posted.getCreatedAt(), posted.getModifiedAt(), posted.getUser().getId());
     }
 
     // 연관관계 설정 후 업데이트, 삭제 시 사용자 검증 구문
@@ -132,15 +131,15 @@ public class PostService {
         // 팔로우 서비스에서  내가 팔로우 하는 user 목록 가져오기
         List<User> followedUsers = followService.getFollowingsUsers(userId);
         //  팔로우하는 사람들의 게시물만 최신순으로 조회
-        List<Post> newsfeedPosts = postRepository.findAllByUserInOrderByCreatedDateDesc(followedUsers);
+        List<Post> newsfeedPosts = postRepository.findAllByUserInOrderByCreatedAtDesc(followedUsers);
 
         return newsfeedPosts.stream()
                 .map(post -> new PostResponseDto(
                         post.getId(),
                         post.getTitle(),
                         post.getContents(),
-                        post.getCreatedDate(),
-                        post.getModifiedDate(),
+                        post.getCreatedAt(),
+                        post.getModifiedAt(),
                         post.getUser().getId()))
                 .collect(Collectors.toList());
     }

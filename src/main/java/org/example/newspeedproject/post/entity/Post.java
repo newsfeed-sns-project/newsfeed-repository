@@ -1,9 +1,11 @@
 package org.example.newspeedproject.post.entity;
 
-import org.example.newspeedproject.user.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.newspeedproject.commo.BaseEntity;
+import org.example.newspeedproject.user.entity.User;
 
 @Getter
 @Entity
@@ -16,9 +18,11 @@ public class Post extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
     private String title;
 
     @Column(nullable = false, columnDefinition = "longtext")
+    @NotBlank
     private String contents;
 
     //연관관계 설정 시 작성자 id값을 받아오면 그 값으로 교체 예정

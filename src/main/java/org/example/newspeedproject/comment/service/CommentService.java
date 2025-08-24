@@ -7,7 +7,6 @@ import org.example.newspeedproject.comment.dto.CommentRequestDto;
 import org.example.newspeedproject.comment.dto.CommentResponseDto;
 import org.example.newspeedproject.comment.entity.Comment;
 import org.example.newspeedproject.comment.repository.CommentRepository;
-
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.post.repository.PostRepository;
 import org.example.newspeedproject.user.entity.User;
@@ -15,8 +14,6 @@ import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

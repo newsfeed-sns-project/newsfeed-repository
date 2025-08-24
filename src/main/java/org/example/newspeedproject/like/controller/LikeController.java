@@ -1,15 +1,12 @@
 package org.example.newspeedproject.like.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.commo.consts.Const;
 import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.service.LikeService;
-import org.example.newspeedproject.post.consts.Const;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import static org.example.newspeedproject.post.consts.Const.LOGIN_USER;
 
 @RestController
 @RequiredArgsConstructor

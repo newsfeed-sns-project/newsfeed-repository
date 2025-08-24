@@ -47,8 +47,8 @@ public class LikeService {
                 post.getId(),
                 user.getId(),
                 "좋아요가 완료되었습니다.",
-                savedLike.getCreatedDate(),
-                savedLike.getModifiedDate()
+                savedLike.getUser().getCreatedAt(),
+                savedLike.getUser().getModifiedAt()
         );
     }
 

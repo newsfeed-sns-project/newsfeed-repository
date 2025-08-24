@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.newspeedproject.commo.BaseEntity;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Getter
 @Entity
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
@@ -20,7 +18,7 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String username;
 
-    @Column(length = 30)
+    @Column(length = 30, unique = true)
     private String email;
 
     @Column(length = 100)

@@ -23,7 +23,7 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-// 이웃 추가
+    // 이웃 추가
     @Transactional
     public void addFollow(Long myUserId, Long userTargetId) {
         if (myUserId.equals(userTargetId)) {

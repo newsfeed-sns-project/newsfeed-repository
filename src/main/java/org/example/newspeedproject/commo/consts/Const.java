@@ -1,4 +1,4 @@
-package org.example.newspeedproject.post.consts;
+package org.example.newspeedproject.commo.consts;
 
 public abstract class Const {
 

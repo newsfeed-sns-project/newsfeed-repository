@@ -3,13 +3,9 @@ package org.example.newspeedproject.like.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.post.entity.BaseEntity;
+import org.example.newspeedproject.commo.BaseEntity;
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.user.entity.User;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
