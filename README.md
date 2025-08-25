@@ -107,14 +107,14 @@
 
 | 기능       | Method | URL                         | 요청 Body 예시 | 응답 Body 예시 |
 |:---|:---|:---|:---|:---|
-| 이웃 추가 | `POST` | `localhost:8080/users/1/follows` | - | ```json<br>{ "id": 1 }``` |
+| 이웃 추가 | `POST` | `localhost:8080/users/1/follows` | - | ```json<br>{<br>"id": 1 <br>}``` |
 | 팔로잉 조회 | `GET` | `localhost:8080/users/me/followings` | - | ```json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>}``` |
-| 팔로워 조회 | `GET` | `localhost:8080/users/me/followers` | - | ```json<br>{<br>  "followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"}``` |
-| 이웃 삭제 | `DELETE` | `localhost:8080/users/1/follows` | - | ```json<br>{ "id": 1}``` |
+| 팔로워 조회 | `GET` | `localhost:8080/users/me/followers` | - | ```json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>}``` |
+| 이웃 삭제 | `DELETE` | `localhost:8080/users/1/follows` | - | ```json<br>{<br>"id": 1<br>}``` |
 
 # 좋아요(Like) API
 
 | 기능       | Method | URL                         | 요청 Body 예시 | 응답 Body 예시 |
 |:---|:---|:---|:---|:---|
-| 게시글 좋아요 추가 | `POST` | `localhost:8080//posts/1/likes` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 완료되었습니다."<br>"createdDate": "2025-08-20T18:30:00",<br>"modifiedDate": "2025-08-20T18:30:00" }``` |
-| 게시글 좋아요 취소 | `DELETE` | `localhost:8080//posts/likes/1` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 취소되었습니다."<br>"createdDate": null<br>"modifiedDate": "2025-08-20T18:40:00"}``` |
+| 게시글 좋아요 추가 | `POST` | `localhost:8080//posts/1/likes` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 완료되었습니다."<br>"createdDate": "2025-08-20T18:30:00",<br>"modifiedDate": "2025-08-20T18:30:00"<br>}``` |
+| 게시글 좋아요 취소 | `DELETE` | `localhost:8080//posts/likes/1` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 취소되었습니다."<br>"createdDate": null<br>"modifiedDate": "2025-08-20T18:40:00"<br>}``` |
