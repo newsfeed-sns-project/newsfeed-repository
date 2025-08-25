@@ -1,6 +1,3 @@
-
-# Newsfeed project
-
 # ** 팀 소개 & 역할**
 
 ### 팀 명 : 칠성사이다 [제로]
@@ -70,54 +67,54 @@
 
 # 회원/인증/프로필 API
 
-| 기능              | Method | URL                                | 요청 Body 예시 | 응답 Body 예시 |
+| 기능                   | Method | URL                                | 요청 Body 예시 | 응답 Body 예시 |
 |------------------|--------|-----------------------------------|----------------|----------------|
-| 회원가입          | POST   | `localhost:8080/auth/signup`       | ```json<br>{ "username": "이관영", "email": "user@example2.com", "password": "Password123!" }``` | ```json<br>{ "id": 1, "username": "이관영", "email": "user@example2.com" }``` |
-| 로그인            | POST   | `localhost:8080/auth/login`        | ```json<br>{ "email": "user@example.com", "password": "Password123!" }``` | ```json<br>{ "status": 404, "error": "Not Found", "message": "유저가 존재하지 않습니다.", "timestamp": "2025-08-25T10:22:57.7273453" }``` |
-| 로그아웃          | POST   | `localhost:8080/auth/logout`       | ```json<br>{ "refreshToken": "dGhpc2lzbXlyZWZyZXNodG9rZW4..." }``` | ```json<br>{ "message": "로그아웃 성공" }``` |
-| 프로필 조회       | GET    | `localhost:8080/users/me/profile`  | - | ```json<br>{ "id": 1, "username": "이관영", "email": "user@example2.com", "createdAt": "2025-08-25T10:22:53.736564", "modifiedAt": "2025-08-25T10:22:53.736564" }``` |
-| 프로필 수정       | PATCH  | `localhost:8080/users/me/profile`  | ```json<br>{ "username": "name", "email": "new_email@example.com" }``` | ```json<br>{ "id": 1, "username": "name", "email": "new_email@example.com", "createdAt": "2025-08-25T10:22:53.736564", "modifiedAt": "2025-08-25T10:22:53.736564" }``` |
-| 비밀번호 수정     | PATCH  | `localhost:8080/users/me/password` | ```json<br>{ "oldpassword": "Password123!", "newpassword": "Password123@" }``` | ```json<br>{ "message": "비밀번호를 수정하였습니다." }``` |
-| 회원 탈퇴         | DELETE | `localhost:8080/users/me`          | ```json<br>{ "email": "new_email@example.com", "password": "Password123@" }``` | ```json<br>{ "message": "회원 탈퇴 성공" }``` |
+| 회원가입          | POST   | `localhost:8080/auth/signup`       | json<br>{<br> "username": "이관영",<br> "email": "user@example2.com",<br> "password": "Password123!" <br>} | json<br>{<br> "id": 1,<br> "username": "이관영",<br> "email": "user@example2.com" <br>} |
+| 로그인            | POST   | `localhost:8080/auth/login`        | json<br>{<br> "email": "user@example.com",<br> "password": "Password123!" <br>} | json<br>{<br> "status": 404,<br> "error": "Not Found",<br> "message": "유저가 존재하지 않습니다.",<br> "timestamp": "2025-08-25T10:22:57.7273453" <br>} |
+| 로그아웃          | POST   | `localhost:8080/auth/logout`       | json<br>{<br> "refreshToken": "dGhpc2lzbXlyZWZyZXNodG9rZW4..." <br>} | json<br>{<br> "message": "로그아웃 성공" <br>} |
+| 프로필 조회       | GET    | `localhost:8080/users/me/profile`  | - | json<br>{<br> "id": 1, <br>"username": "이관영", <br>"email": "user@example2.com", <br>"createdAt": "2025-08-25T10:22:53.736564", <br>"modifiedAt": "2025-08-25T10:22:53.736564" <br>} |
+| 프로필 수정       | PATCH  | `localhost:8080/users/me/profile`  | json<br>{<br> "username": "name", "email": "new_email@example.com" <br>} | json<br>{<br> "id": 1, <br>"username": "name", <br>"email": "new_email@example.com", <br>"createdAt": "2025-08-25T10:22:53.736564", <br>"modifiedAt": "2025-08-25T10:22:53.736564" <br>} |
+| 비밀번호 수정     | PATCH  | `localhost:8080/users/me/password` | json<br>{<br> "oldpassword": "Password123!", "newpassword": "Password123@" <br>} | json<br>{<br> "message": "비밀번호를 수정하였습니다." <br>} |
+| 회원 탈퇴         | DELETE | `localhost:8080/users/me`          | json<br>{<br> "email": "new_email@example.com", <br>"password": "Password123@" <br>} | json<br>{<br> "message": "회원 탈퇴 성공" <br>} |
 
 #  게시글 API
 
 | 기능                   | Method | URL                               | 요청 Body 예시 | 응답 Body 예시 |
 |------------------------|--------|-----------------------------------|----------------|----------------|
-| 게시글 등록            | POST   | `http://localhost:8080/posts`      | ```json<br>{ "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈" }``` | ```json<br>{ "id": 1, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:40:00.3592654", "modifiedDate": "2025-08-25T10:40:00.3592654", "userId": 3 }``` |
-| 게시글 전체 조회        | GET    | `http://localhost:8080/posts`      | - | ```json<br>{ "posts": [ { "id": 1, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:40:00.359265", "modifiedDate": "2025-08-25T10:40:00.359265", "userId": 3 } ], "pageNumber": 0, "totalPages": 1, "totalElements": 1 }``` |
-| 게시글 전체 조회 (이전페이지) | GET | `http://localhost:8080/posts?page=1` | - | ```json<br>{ "posts": [ { "id": 1, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:40:00.359265", "modifiedDate": "2025-08-25T10:40:00.359265", "userId": 3 } ], "pageNumber": 1, "totalPages": 2, "totalElements": 11 }``` |
-| 게시글 수정 기준 전체 조회 | GET | `http://localhost:8080/posts/array` | - | ```json<br>{ "posts": [ { "id": 11, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:41:25.41148", "modifiedDate": "2025-08-25T10:41:25.41148", "userId": 3 } ] }``` |
-| 게시글 상세 조회         | GET    | `http://localhost:8080/posts/2`    | - | ```json<br>{ "id": 2, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:41:15.061576", "modifiedDate": "2025-08-25T10:41:15.061576", "userId": 3 }``` |
-| 게시글 기간별 조회       | POST   | `http://localhost:8080/posts/search` | ```json<br>{ "start": "2025-08-19", "end": "2025-08-20" }``` | ```json<br>{ "posts": [ { "id": 11, "title": "칠성사이다[제로] 내돈내산 후기", "contents": "댕 맛있음, 꼭 사먹어 보셈", "createdDate": "2025-08-25T10:41:25.41148", "modifiedDate": "2025-08-25T10:41:25.41148", "userId": 3 } ] }``` |
-| 게시글 수정             | PUT    | `http://localhost:8080/posts/2`    | ```json<br>{ "title": "칠성사이다[제로] 꼭 드셔보세요", "contents": "칠성사이다 보다 칠성사이다[제로]가 더 맛있는듯!?" }``` | ```json<br>*** 게시글 수정 완료 ***``` |
-| 게시글 삭제             | DELETE | `http://localhost:8080/posts/1`    | - | ```json<br>*** 게시글 삭제 성공 ***``` |
+| 게시글 등록            | POST   | `http://localhost:8080/posts`      | json<br>{<br> "title": "칠성사이다[제로] 내돈내산 후기",<br> "contents": "댕 맛있음, 꼭 사먹어 보셈" <br>} | json<br>{<br> "id": 1, <br>"title": "칠성사이다[제로] 내돈내산 후기", <br>"contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:40:00.3592654",<br> "modifiedDate": "2025-08-25T10:40:00.3592654", <br>"userId": 3 <br>} |
+| 게시글 전체 조회        | GET    | `http://localhost:8080/posts`      | - | json<br>{<br> "posts": [ {<br> "id": 1, <br>"title": "칠성사이다[제로] 내돈내산 후기", <br>"contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:40:00.359265", <br>"modifiedDate": "2025-08-25T10:40:00.359265", <br>"userId": 3 <br>} ], <br>"pageNumber": 0, <br>"totalPages": 1, <br>"totalElements": 1 <br>} |
+| 게시글 전체 조회 (이전페이지) | GET | `http://localhost:8080/posts?page=1` | - | json<br>{<br> "posts": [ {<br> "id": 1, <br>"title": "칠성사이다[제로] 내돈내산 후기", <br>"contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:40:00.359265", <br>"modifiedDate": "2025-08-25T10:40:00.359265", <br>"userId": 3 } ], <br>"pageNumber": 1, <br>"totalPages": 2, <br>"totalElements": 11 <br>} |
+| 게시글 수정 기준 전체 조회 | GET | `http://localhost:8080/posts/array` | - | json<br>{<br> "posts": [ {<br> "id": 11, "title": "칠성사이다[제로] 내돈내산 후기", <br>"contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:41:25.41148", <br>"modifiedDate": "2025-08-25T10:41:25.41148", <br>"userId": 3 <br>} ] } |
+| 게시글 상세 조회         | GET    | `http://localhost:8080/posts/2`    | - | json<br>{<br> "id": 2, <br>"title": "칠성사이다[제로] 내돈내산 후기", <br>"contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:41:15.061576", <br>"modifiedDate": "2025-08-25T10:41:15.061576", <br>"userId": 3 <br>} |
+| 게시글 기간별 조회       | POST   | `http://localhost:8080/posts/search` | json<br>{<br> "start": "2025-08-19", <br>"end": "2025-08-20" <br>} | json<br>{<br> "posts": [ {<br> "id": 11, <br>"title": "칠성사이다[제로] 내돈내산 후기",<br> "contents": "댕 맛있음, 꼭 사먹어 보셈", <br>"createdDate": "2025-08-25T10:41:25.41148",<br> "modifiedDate": "2025-08-25T10:41:25.41148", <br>"userId": 3 <br>} ] } |
+| 게시글 수정             | PUT    | `http://localhost:8080/posts/2`    | json<br>{<br> "title": "칠성사이다[제로] 꼭 드셔보세요",<br> "contents": "칠성사이다 보다 칠성사이다[제로]가 더 맛있는듯!?" <br>} | json<br>*** 게시글 수정 완료 *** |
+| 게시글 삭제             | DELETE | `http://localhost:8080/posts/1`    | - | json<br>*** 게시글 삭제 성공 *** |
 
 # 댓글(Comment) API
 
 | 기능             | Method | URL                                | 요청 Body 예시 | 응답 Body 예시 |
 |-----------------|--------|-----------------------------------|----------------|----------------|
-| 댓글 등록        | POST   | `http://localhost:8080/posts/1/comments` | ```json<br>{ "comment": "testComment" }``` | ```json<br>{ "comment": "testComment" }``` |
-| 댓글 단건 조회   | GET    | `http://localhost:8080/posts/comments/1` | - | ```json<br>{ "comment": "testComment" }``` |
-| 댓글 전체 조회   | GET    | `http://localhost:8080/posts/1/comments` | - | ```json<br>[ { "comment": "testComment" } ]``` |
-| 댓글 수정        | PUT    | `http://localhost:8080/posts/comments/1` | ```json<br>{ "comment": "hello world" }``` | ```json<br>{ "comment": "hello world" }``` |
-| 댓글 삭제        | DELETE | `http://localhost:8080/posts/comments/1` | - | ```json<br>*** 댓글 삭제 성공 ***``` |
+| 댓글 등록        | POST   | `http://localhost:8080/posts/1/comments` | json<br>{ <br>"comment": "testComment" <br>} | json<br>{ <br>"comment": "testComment" <br>} |
+| 댓글 단건 조회   | GET    | `http://localhost:8080/posts/comments/1` | - | json<br>{ <br>"comment": "testComment" <br>} |
+| 댓글 전체 조회   | GET    | `http://localhost:8080/posts/1/comments` | - | json<br>[ { <br>"comment": "testComment"<br> } ] |
+| 댓글 수정        | PUT    | `http://localhost:8080/posts/comments/1` | json<br>{ <br>"comment": "hello world" <br>} | json<br>{<br> "comment": "hello world" <br>} |
+| 댓글 삭제        | DELETE | `http://localhost:8080/posts/comments/1` | - | json<br>*** 댓글 삭제 성공 *** |
 
 # 팔로우(Follow) API
 
 | 기능       | Method | URL                         | 요청 Body 예시 | 응답 Body 예시 |
 |:---|:---|:---|:---|:---|
-| 이웃 추가 | `POST` | `localhost:8080/users/1/follows` | - | ```json<br>{<br>"id": 1 <br>}``` |
-| 팔로잉 조회 | `GET` | `localhost:8080/users/me/followings` | - | ```json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>}``` |
-| 팔로워 조회 | `GET` | `localhost:8080/users/me/followers` | - | ```json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>}``` |
-| 이웃 삭제 | `DELETE` | `localhost:8080/users/1/follows` | - | ```json<br>{<br>"id": 1<br>}``` |
+| 이웃 추가 | `POST` | `localhost:8080/users/1/follows` | - | json<br>{<br>"id": 1 <br>} |
+| 팔로잉 조회 | `GET` | `localhost:8080/users/me/followings` | - | json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>} |
+| 팔로워 조회 | `GET` | `localhost:8080/users/me/followers` | - | json<br>{<br>"followingId": 1,<br>"followingUsername": "example",<br>"followingEmail": "user@example4.com"<br>} |
+| 이웃 삭제 | `DELETE` | `localhost:8080/users/1/follows` | - | json<br>{<br>"id": 1<br>} |
 
 # 좋아요(Like) API
 
 | 기능       | Method | URL                         | 요청 Body 예시 | 응답 Body 예시 |
 |:---|:---|:---|:---|:---|
-| 게시글 좋아요 추가 | `POST` | `localhost:8080//posts/1/likes` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 완료되었습니다."<br>"createdDate": "2025-08-20T18:30:00",<br>"modifiedDate": "2025-08-20T18:30:00"<br>}``` |
-| 게시글 좋아요 취소 | `DELETE` | `localhost:8080//posts/likes/1` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 취소되었습니다."<br>"createdDate": null<br>"modifiedDate": "2025-08-20T18:40:00"<br>}``` |
+| 게시글 좋아요 추가 | `POST` | `localhost:8080//posts/1/likes` | - | json<br>{<br>"likeId": 1,<br>"userId": 1,<br>"postId": 1,<br>"message": "좋아요가 완료되었습니다."<br>"createdDate": "2025-08-20T18:30:00",<br>"modifiedDate": "2025-08-20T18:30:00"<br>} |
+| 게시글 좋아요 취소 | `DELETE` | `localhost:8080//posts/likes/1` | - | json<br>{<br>"likeId": 1,<br>"userId": 1,<br>"postId": 1,<br>"message": "좋아요가 취소되었습니다."<br>"createdDate": null<br>"modifiedDate": "2025-08-20T18:40:00"<br>} |
 
 # ERD
 
