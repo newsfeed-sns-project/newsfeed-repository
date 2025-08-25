@@ -7,6 +7,7 @@ import org.example.newspeedproject.follow.service.FollowService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
 

@@ -8,8 +8,10 @@ import org.example.newspeedproject.auth.dto.LoginRequestDto;
 import org.example.newspeedproject.config.PasswordEncoder;
 import org.example.newspeedproject.user.entity.User;
 import org.example.newspeedproject.user.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor

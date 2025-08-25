@@ -1,9 +1,9 @@
 package org.example.newspeedproject.post.entity;
 
+import org.example.newspeedproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.user.entity.User;
 
 @Getter
 @Entity
