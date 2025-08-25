@@ -3,8 +3,7 @@ package org.example.newspeedproject.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.commo.BaseEntity;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.example.newspeedproject.common.BaseEntity;
 
 
 @Getter
