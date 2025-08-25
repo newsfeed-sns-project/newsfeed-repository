@@ -1,4 +1,4 @@
-package org.example.newspeedproject.commo;
+package org.example.newspeedproject.common;
 
 import jakarta.persistence.*;
 import lombok.Getter;
