@@ -118,3 +118,8 @@
 |:---|:---|:---|:---|:---|
 | 게시글 좋아요 추가 | `POST` | `localhost:8080//posts/1/likes` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 완료되었습니다."<br>"createdDate": "2025-08-20T18:30:00",<br>"modifiedDate": "2025-08-20T18:30:00"<br>}``` |
 | 게시글 좋아요 취소 | `DELETE` | `localhost:8080//posts/likes/1` | - | ```json<br>{<br>"likeId": 1,"<br>userId": 1,"<br>postId": 1,<br>"message": "좋아요가 취소되었습니다."<br>"createdDate": null<br>"modifiedDate": "2025-08-20T18:40:00"<br>}``` |
+
+# ERD
+
+<img width="1181" height="738" alt="image" src="https://github.com/user-attachments/assets/a84aa309-8fcf-4dc7-b59e-1cc6999966f2" />
+
