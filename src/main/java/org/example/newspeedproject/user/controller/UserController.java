@@ -1,17 +1,16 @@
 package org.example.newspeedproject.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.auth.dto.LoginRequestDto;
-import org.example.newspeedproject.post.consts.Const;
-import org.example.newspeedproject.user.dto.*;
+import org.example.newspeedproject.common.consts.Const;
+import org.example.newspeedproject.user.dto.PasswordChangeRequestDto;
+import org.example.newspeedproject.user.dto.ProfileChangeRequestDto;
+import org.example.newspeedproject.user.dto.UserResponseDto;
 import org.example.newspeedproject.user.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor

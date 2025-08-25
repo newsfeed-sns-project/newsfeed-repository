@@ -12,7 +12,6 @@ import org.example.newspeedproject.user.entity.User;
 import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
