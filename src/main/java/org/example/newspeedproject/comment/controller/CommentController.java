@@ -7,6 +7,7 @@ import org.example.newspeedproject.comment.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -25,14 +26,14 @@ public class CommentController {
     }
 
     @GetMapping("/posts/comments/{id}")
-    public ResponseEntity<CommentResponseDto> findOne(@PathVariable Long id, @SessionAttribute(name = "LOGIN_USER_ID") Long userId) {
-        return ResponseEntity.ok(commentService.findOne(id));
-
+    public ResponseEntity<CommentResponseDto> findOne(
+            @PathVariable Long id,
+            @SessionAttribute(name = "LOGIN_USER_ID") Long userId) throws AccessDeniedException {
+        return ResponseEntity.ok(commentService.findOne(id, userId));
     }
 
     @GetMapping("/posts/{postsId}/comments")
-    public ResponseEntity<List<CommentResponseDto>> findByPost(@PathVariable Long postsId, @SessionAttribute(name = "LOGIN_USER_ID") Long userId) {
-
+    public ResponseEntity<List<CommentResponseDto>> findByPost(@PathVariable Long postsId) {
         return ResponseEntity.ok(commentService.findByPost(postsId));
     }
 
@@ -40,18 +41,15 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> update(
             @SessionAttribute(name = "LOGIN_USER_ID") Long userId,
             @PathVariable Long id,
-            @RequestBody CommentRequestDto dto
-    ) {
-        return ResponseEntity.ok(commentService.update(id, dto));
+            @RequestBody CommentRequestDto dto) throws AccessDeniedException {
+        return ResponseEntity.ok(commentService.update(id, userId, dto));
     }
 
     @DeleteMapping("/posts/comments/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long id,
-            @SessionAttribute(name = "LOGIN_USER_ID") Long userId
-    ) {
-        commentService.delete(id);
+            @SessionAttribute(name = "LOGIN_USER_ID") Long userId) throws AccessDeniedException {
+        commentService.delete(id, userId);
+        return ResponseEntity.noContent().build();
     }
-
-
 }
