@@ -1,13 +1,11 @@
 package org.example.newspeedproject.comment.service;
 
-
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.comment.dto.CommentRequestDto;
 import org.example.newspeedproject.comment.dto.CommentResponseDto;
 import org.example.newspeedproject.comment.entity.Comment;
 import org.example.newspeedproject.comment.repository.CommentRepository;
-
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.post.repository.PostRepository;
 import org.example.newspeedproject.user.entity.User;
@@ -15,8 +13,7 @@ import org.example.newspeedproject.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,11 +38,14 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public CommentResponseDto findOne(Long id) {
+    public CommentResponseDto findOne(Long id, Long userId) throws AccessDeniedException {
         Comment comment = commentRepository
                 .findById(id)
                 .orElseThrow(
                         () -> new EntityNotFoundException("comment not found"));
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
         return new CommentResponseDto(comment.getComment());
     }
 
@@ -59,16 +59,22 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto update(Long id, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto update(Long id, Long userId, CommentRequestDto commentRequestDto) throws AccessDeniedException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("comment not found"));
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("수정 권한이 없습니다.");
+        }
         comment.update(commentRequestDto.getComment());
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getComment());
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, Long userId) throws AccessDeniedException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("comment not found"));
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("삭제 권한이 없습니다.");
+        }
         commentRepository.delete(comment);
     }
 }
