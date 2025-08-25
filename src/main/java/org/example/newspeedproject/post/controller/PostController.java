@@ -2,7 +2,7 @@ package org.example.newspeedproject.post.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.post.consts.Const;
+import org.example.newspeedproject.common.consts.Const;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
 import org.example.newspeedproject.post.dto.reponse.PostResponseDto;
 import org.example.newspeedproject.post.dto.request.CreatePostRequestDto;
