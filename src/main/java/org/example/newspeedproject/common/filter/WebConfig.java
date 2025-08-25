@@ -1,4 +1,4 @@
-package org.example.newspeedproject.commo.Filter;
+package org.example.newspeedproject.common.filter;
 
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.commo.BaseEntity;
+import org.example.newspeedproject.common.BaseEntity;
 import org.example.newspeedproject.user.entity.User;
 
 @Getter

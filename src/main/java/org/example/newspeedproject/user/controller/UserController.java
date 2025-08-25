@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.auth.dto.LoginRequestDto;
-import org.example.newspeedproject.commo.consts.Const;
+import org.example.newspeedproject.common.consts.Const;
 import org.example.newspeedproject.user.dto.*;
 import org.example.newspeedproject.user.service.UserService;
 import org.springframework.http.ResponseEntity;

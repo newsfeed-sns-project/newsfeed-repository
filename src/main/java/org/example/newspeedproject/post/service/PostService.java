@@ -2,7 +2,7 @@ package org.example.newspeedproject.post.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.commo.exception.UnauthorizedException;
+import org.example.newspeedproject.common.exception.UnauthorizedException;
 import org.example.newspeedproject.follow.service.FollowService;
 import org.example.newspeedproject.post.dto.reponse.PostPageResponseDto;
 import org.example.newspeedproject.post.dto.reponse.PostResponseDto;

@@ -1,7 +1,7 @@
 package org.example.newspeedproject.like.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.commo.consts.Const;
+import org.example.newspeedproject.common.consts.Const;
 import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.service.LikeService;
 import org.springframework.http.HttpStatus;

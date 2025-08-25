@@ -2,7 +2,7 @@ package org.example.newspeedproject.like.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.newspeedproject.commo.exception.ForbiddenException;
+import org.example.newspeedproject.common.exception.ForbiddenException;
 import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.entity.Like;
 import org.example.newspeedproject.like.repository.LikeRepository;

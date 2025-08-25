@@ -1,4 +1,4 @@
-package org.example.newspeedproject.commo.Filter;
+package org.example.newspeedproject.common.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

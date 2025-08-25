@@ -3,7 +3,7 @@ package org.example.newspeedproject.like.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.newspeedproject.commo.BaseEntity;
+import org.example.newspeedproject.common.BaseEntity;
 import org.example.newspeedproject.post.entity.Post;
 import org.example.newspeedproject.user.entity.User;
 

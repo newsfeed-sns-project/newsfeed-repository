@@ -1,4 +1,4 @@
-package org.example.newspeedproject.commo.exception;
+package org.example.newspeedproject.common.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
