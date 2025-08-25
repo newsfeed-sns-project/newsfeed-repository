@@ -1,5 +1,6 @@
 package org.example.newspeedproject.follow.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.follow.dto.FollowerResponse;
 import org.example.newspeedproject.follow.dto.FollowingResponse;
@@ -26,19 +27,19 @@ public class FollowService {
     @Transactional
     public void addFollow(Long myUserId, Long userTargetId) {
         if (myUserId.equals(userTargetId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 팔로우할 수 없습니다.");
+            throw new IllegalArgumentException("자기 자신을 팔로우할 수 없습니다.");
         }
         //현재 로그인한 나를 찾는 것
         User myUser = userRepository.findById(myUserId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("유저를 찾을 수 없습니다.")
         );
         // 내가 팔로워 하려는 대상을 찾는 것
         User userToFollow = userRepository.findById(userTargetId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "팔로우할 유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("팔로우할 유저를 찾을 수 없습니다.")
         );
 
         if (followRepository.existsByFollowerAndFollowing(myUser, userToFollow)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 팔로우한 유저입니다.");
+            throw new IllegalArgumentException("이미 팔로우한 유저입니다.");
         }
 
         Follow follow = new Follow(myUser, userToFollow);
@@ -48,7 +49,7 @@ public class FollowService {
     @Transactional
     public List<FollowingResponse> getFollowings(Long myUserId) {
         User myUser = userRepository.findById(myUserId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("유저를 찾을 수 없습니다.")
         );
         List<Follow> follows = followRepository.findAllByFollower(myUser);
         List<FollowingResponse> followingResponses = new ArrayList<>();
@@ -61,7 +62,7 @@ public class FollowService {
     @Transactional(readOnly = true)
     public List<FollowerResponse> getFollowers(Long userTargetId) {
         User user = userRepository.findById(userTargetId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("유저를 찾을 수 없습니다.")
         );
 
         List<Follow> follows = followRepository.findAllByFollowing(user);
@@ -74,21 +75,32 @@ public class FollowService {
     @Transactional
     public void unfollow(Long myUserId, Long userToUnfollowId) {
         if (myUserId.equals(userToUnfollowId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 언팔로우할 수 없습니다.");
+            throw new IllegalArgumentException("자기 자신을 언팔로우할 수 없습니다.");
         }
         User myUser = userRepository.findById(myUserId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("유저를 찾을 수 없습니다.")
         );
         User userToUnfollow = userRepository.findById(userToUnfollowId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "언팔로우할 유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("언팔로우할 유저를 찾을 수 없습니다.")
         );
 
         Follow follow = followRepository.findByFollowerAndFollowing(myUser, userToUnfollow).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 팔로우 관계를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("해당 팔로우 관계를 찾을 수 없습니다.")
         );
         followRepository.delete(follow);
     }
 
+    // 팔로잉 하는 사용자 목록을 User 엔티티 타입으로 반환
+    @Transactional(readOnly = true)
+    public List<User> getFollowingsUsers(Long myUserId) {
+        User myUser = userRepository.findById(myUserId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+        );
+        List<Follow> follows = followRepository.findAllByFollower(myUser);
+        return follows.stream()
+                .map(Follow::getFollowing)
+                .collect(Collectors.toList());
+    }
 }
 
 

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.newspeedproject.auth.dto.LoginRequestDto;
+import org.example.newspeedproject.post.consts.Const;
 import org.example.newspeedproject.user.dto.*;
 import org.example.newspeedproject.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,51 +21,30 @@ public class UserController {
 
     //비밀번호 수정
     @PatchMapping("/me/password")
-    public ResponseEntity<String> passwordChange(@RequestBody @Valid PasswordChangeRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+    public ResponseEntity<String> passwordChange(@RequestBody @Valid PasswordChangeRequestDto userRequest, HttpServletRequest request, @SessionAttribute(name = Const.LOGIN_USER) Long id) {
         userService.passwordChange(id, userRequest);
         return ResponseEntity.ok("비밀번호를 수정하였습니다.");
     }
 
     //프로필 수정
     @PatchMapping("/me/profile")
-    public ResponseEntity<UserResponseDto> updateProfile(@RequestBody @Valid ProfileChangeRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+    public ResponseEntity<UserResponseDto> updateProfile(@RequestBody @Valid ProfileChangeRequestDto userRequest, HttpServletRequest request, @SessionAttribute(name = Const.LOGIN_USER) Long id) {
         UserResponseDto response = userService.updateUserProfile(id, userRequest);
         return ResponseEntity.ok(response);
     }
 
     //프로필 조회
     @GetMapping("/me/profile")
-    public ResponseEntity<UserResponseDto> getProfile(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+    public ResponseEntity<UserResponseDto> getProfile(HttpServletRequest request, @SessionAttribute(name = Const.LOGIN_USER) Long id) {
         UserResponseDto response = userService.findUserId(id);
         return ResponseEntity.ok(response);
     }
 
     //회원 탈퇴
     @DeleteMapping("/me")
-    public ResponseEntity<String> deleteUser(@RequestBody @Valid LoginRequestDto userRequest, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_USER_ID") == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 필요.");
-        }
-        Long id = (Long) session.getAttribute("LOGIN_USER_ID");
+    public ResponseEntity<String> deleteUser(@RequestBody @Valid LoginRequestDto userRequest, HttpServletRequest request, @SessionAttribute(name = Const.LOGIN_USER) Long id) {
         userService.deleteUser(id, userRequest);
-        session.invalidate();
+        request.getSession().invalidate();
         return ResponseEntity.ok("회원 탈퇴 성공");
     }
 }

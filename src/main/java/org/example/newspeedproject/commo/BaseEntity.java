@@ -1,4 +1,4 @@
-package org.example.newspeedproject.comment.entity;
+package org.example.newspeedproject.commo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,16 +11,14 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity {
-
+public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;
-
 
 }

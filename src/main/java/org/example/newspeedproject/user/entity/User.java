@@ -3,18 +3,15 @@ package org.example.newspeedproject.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.example.newspeedproject.commo.BaseEntity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //pk, autoincrement
@@ -22,20 +19,11 @@ public class User {
     @Column(length = 20)
     private String username;
 
-    @Column(length = 30)
+    @Column(length = 30, unique = true)
     private String email;
 
     @Column(length = 100)
     private String password;
-
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdDateAt;
-
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedDateAt;
 
     public User(String username, String email, String password) {
         this.username = username;

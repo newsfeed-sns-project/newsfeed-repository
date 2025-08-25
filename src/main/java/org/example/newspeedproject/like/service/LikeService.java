@@ -1,6 +1,8 @@
 package org.example.newspeedproject.like.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.newspeedproject.commo.exception.ForbiddenException;
 import org.example.newspeedproject.like.dto.LikeResponse;
 import org.example.newspeedproject.like.entity.Like;
 import org.example.newspeedproject.like.repository.LikeRepository;
@@ -26,11 +28,11 @@ public class LikeService {
     @Transactional
     public LikeResponse addLike(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")
         );
 
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("유저를 찾을 수 없습니다.")
         );
 
         if (likeRepository.findByPostAndUser(post, user).isPresent()) {
@@ -53,10 +55,10 @@ public class LikeService {
     @Transactional
     public LikeResponse deleteLike(Long likeId, Long userId) {
         Like like = likeRepository.findById(likeId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "좋아요가 없습니다."));
+                () -> new EntityNotFoundException("좋아요가 없습니다."));
 
         if (!like.getUser().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+            throw new ForbiddenException("권한이 없습니다.");
         }
 
         LocalDateTime modifiedDate = LocalDateTime.now();
